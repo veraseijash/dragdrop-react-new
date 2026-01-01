@@ -1,0 +1,1090 @@
+// src/data/pageTemplate.js
+
+export const defaultPageTemplate = {
+  id: 0,
+  name: "página nueva",
+  style: {
+    backgroundColor: '#f5f5f5',
+    backgroundImage: 'none',
+    backgroundPosition: 'left top',
+    backgroundRepeat: 'no-repeat',
+    color: '#000000',
+    fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
+    width: '100%',
+  },
+  backgroundColorContent: '#f1f1ea',
+  marginContent: 'auto',
+  rows: [
+    {
+      rowPosition: 0,      
+      template_list: {
+        style: {
+          backgroundColor: 'transparent',
+          backgroundImage: 'none',
+          backgroundPosition: 'left top',
+          backgroundRepeat: 'no-repeat',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          borderRadius: '0px',
+          color: '#000000',
+          padding: '0px',
+          width: '100%',
+        },
+      },
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'auto',
+        color: '#000000',
+        width: '650px',
+        maxWidth: '650px',
+        margin: 'auto',
+      },
+      cols: [
+        {
+          colPosition: 0,
+          style: {
+            width: '100%',
+            backgroundColor: 'transparent',
+            borderWidth: '0px',
+            borderStyle: 'solid',
+            borderColor: 'transparent',
+            padding: '5px 0px',
+            justifyContent: 'center',
+          },
+          content: [
+            {
+              position: 0,
+              class: "module-empty",
+              style: {},
+            }
+          ],
+        },
+      ],
+    }
+  ],
+};
+export const newCol = {
+  colPosition: 0,
+  style: {
+    width: '5%',
+    backgroundColor: 'transparent',
+    borderWidth: '0px',
+    borderStyle: 'solid',
+    borderColor: 'transparent',
+    padding: '5px 0px',
+    justifyContent: 'center',
+  },
+  content: [
+    {
+      position: 0,
+      class: "module-empty",
+      style: {},
+    }
+  ],
+}
+export const rowCols = [
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '100%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  }, 
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '50%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '50%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  }, 
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '30%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '70%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  }, 
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '40%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '60%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  }, 
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '60%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '40%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  }, 
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '70%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '30%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  }, 
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '33.33333333333333%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '33.33333333333333%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '33.33333333333333%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  },
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '20%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '20%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '60%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  },
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '60%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '20%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '20%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  },
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '20%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '60%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '20%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  },
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '25%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '25%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '25%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '25%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  },
+  {
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+    },
+    cols: [
+      {
+        colPosition: 0,
+        style: {
+          width: '16.66666666666667%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '16.66666666666667%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '16.66666666666667%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '16.66666666666667%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '16.66666666666667%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+      {
+        colPosition: 0,
+        style: {
+          width: '16.66666666666667%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'center',
+        },
+        content: [
+          {
+            position: 0,
+            class: "module-empty",
+            style: {},
+          }
+        ],
+      },
+    ],
+  },
+  
+]
