@@ -6,7 +6,7 @@ import NumberStepper from "../../components/dashboard/utilities/NumberStepper";
 import ColsSetting from "../../components/dashboard/ColsSetting";
 import PaddingSetting from "./utilities/PaddingSetting";
 
-export default function RowSetting({ row, onChangeRow, onClose }) {
+export default function RowSetting({ row, onChangeRow, onDeleteRow, onCloneRow, onClose }) {
   console.log('row: ', row)
   const [colActive, setColActive] = useState(0);
 
@@ -36,22 +36,25 @@ export default function RowSetting({ row, onChangeRow, onClose }) {
       <div className="row-setting-header">
         <span>Propiedades de la fila</span>
         <div className="sidebar-title">
-          <button 
+          <button
             className="btn-delete"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="Eliminar"
+            onClick={() => onDeleteRow(row.rowPosition)}
           >
             <i className="bi bi-trash"></i>
           </button>
-          <button 
+          <button
             className="btn-clone"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
-            title="Duplcar"
+            title="Duplicar"
+            onClick={() => onCloneRow(row)}
           >
             <i className="bi bi-copy"></i>
           </button>
+
           <button className="btn-close" onClick={onClose}>✕</button>
         </div>
         

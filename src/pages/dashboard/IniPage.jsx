@@ -78,6 +78,61 @@ export default function IniPage() {
     setSelectedRow(currentRow || null);
   };
 
+  const handleDeleteRow = (rowPosition) => {
+    setPageData((prev) => {
+      if (prev.rows.length <= 1) {
+        return prev; // ❌ no se puede eliminar la última fila
+      }
+
+      const newRows = prev.rows
+        .filter((r) => r.rowPosition !== rowPosition)
+        .map((r, index) => ({
+          ...r,
+          rowPosition: index,
+        }));
+
+      return {
+        ...prev,
+        rows: newRows,
+      };
+    });
+
+    setSelectedRow(null);
+  };
+
+  const handleCloneRow = (rowToClone) => {
+    setPageData((prev) => {
+      const rows = [...prev.rows];
+
+      const index = rows.findIndex(
+        (r) => r.rowPosition === rowToClone.rowPosition
+      );
+
+      if (index === -1) return prev;
+
+      // 🔁 Clon profundo para evitar referencias compartidas
+      const clonedRow = structuredClone(rowToClone);
+
+      // (opcional) si tienes ids únicos
+      clonedRow.id = crypto.randomUUID();
+
+      // Insertar justo debajo
+      rows.splice(index + 1, 0, clonedRow);
+
+      // Recalcular posiciones
+      const updatedRows = rows.map((r, i) => ({
+        ...r,
+        rowPosition: i,
+      }));
+
+      return {
+        ...prev,
+        rows: updatedRows,
+      };
+    });
+  };
+
+
   useEffect(() => {
     if (!pageData) return;
 
@@ -183,8 +238,12 @@ export default function IniPage() {
       <RowSetting
         row={selectedRow}
         onChangeRow={handleUpdateRow}
+        onDeleteRow={handleDeleteRow}
+        onCloneRow={handleCloneRow}
+        canDelete={pageData.rows.length > 1}
         onClose={() => setSelectedRow(null)}
       />
+
     </div>
     
   );
