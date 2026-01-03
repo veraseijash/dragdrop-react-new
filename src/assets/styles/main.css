@@ -347,6 +347,29 @@ body {
   padding: 3px 20px;
 
 }
+.icon-move {
+  position: absolute;
+  z-index: 3;
+  top: calc(50% - 16px);
+  left: 0;
+  display: none;
+  padding: 5px 8px 2px;
+  border: none;
+  background: var(--bs-primary);
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  cursor: -webkit-grab;
+  cursor: grab !important;
+  color: white;
+  font-size: 120%;
+}
+.row-dragging {
+  background-color: rgba(13, 110, 253, 0.1);
+  outline: 2px dashed #0d6efd;
+}
+.row-container-outer:hover .icon-move {
+  display: inline-block;
+}
 .row-item {
   display: -ms-flexbox;
   display: flex;
@@ -447,6 +470,7 @@ body {
   border-radius: 12px;
   white-space: nowrap;
   font-weight: 600;
+  z-index: 100;
 }
 .hover-top::after {
   top: -15px;

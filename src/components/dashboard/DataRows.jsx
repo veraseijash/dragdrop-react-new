@@ -31,7 +31,13 @@ export default function Rows({ onDragStart }) {
               style={{ width: "100%" }}
               data-id={rowIndex}
               draggable={true}
-              onDragStart={() => onDragStart(rowIndex)}
+              onDragStart={() =>
+                onDragStart({
+                  type: "new",
+                  rowIndex
+                })
+              }
+
             >
               <div className="card-body d-flex gap-2">
                 {row.cols.map((col, colIndex) => (

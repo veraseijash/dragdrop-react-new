@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
-export default function StageInner({ pageData, onDropOnRowItem, onSelectRow }) {
+export default function StageInner({
+  pageData,
+  onDropOnRowItem,
+  onSelectRow,
+  setDragData,
+}) {
   const [hoverRow, setHoverRow] = useState(null); // rowPosition actualmente resaltado
   const [hoverSide, setHoverSide] = useState(null); // "top" o "bottom"
 
-  const [selectedRow, setSelectedRow] = useState(null);
-
+  
   const handleDragOver = (event, rowPosition) => {
     event.preventDefault();
 
@@ -40,13 +44,63 @@ export default function StageInner({ pageData, onDropOnRowItem, onSelectRow }) {
     setHoverSide(null);
   };
 
+  const rowRefs = useRef({});
+
   return (
     <div className="stage-inner">
       <div className="stageContainer" style={pageData?.style}>          
         {pageData?.rows.map((row, index) => {
           const isHover = hoverRow === row.rowPosition;
           return (
-            <div className="row-container-outer" key={row.rowPosition}>           
+            <div
+              ref={(el) => (rowRefs.current[row.rowPosition] = el)}
+              className="row-container-outer"
+              key={row.rowPosition}
+            >
+              <button
+                className="icon-move"
+                draggable
+                onDragStart={(e) => {
+                  e.stopPropagation();
+                  const rowEl = rowRefs.current[row.rowPosition];
+                  if (rowEl) {
+                    const clone = rowEl.cloneNode(true);
+
+                    clone.style.position = "absolute";
+                    clone.style.top = "-1000px";
+                    clone.style.left = "0";
+                    clone.style.width = `${rowEl.offsetWidth}px`;
+                    clone.style.pointerEvents = "none";
+                    clone.style.opacity = "0.95";
+
+                    // 👉 estilos del ghost
+                    clone.style.border = "2px solid #0d6efd";
+                    clone.style.borderRadius = "6px";
+                    clone.style.boxShadow = "0 10px 25px rgba(13,110,253,.35)";
+                    clone.style.background = "#fff";
+
+                    document.body.appendChild(clone);
+
+                    e.dataTransfer.setDragImage(
+                      clone,
+                      rowEl.offsetWidth / 2,
+                      rowEl.offsetHeight / 2
+                    );
+
+                    setTimeout(() => {
+                      document.body.removeChild(clone);
+                    }, 0);
+                  }
+
+                  setDragData({
+                    type: "move",
+                    rowPosition: row.rowPosition,
+                  });
+                }}
+              >
+                <span className="ico ico-move-vertical"></span>
+              </button>
+
               <div className={`rows-content 
                     ${isHover && hoverSide === "top" ? "hover-top" : ""} 
                     ${isHover && hoverSide === "bottom" ? "hover-bottom" : ""}

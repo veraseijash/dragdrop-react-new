@@ -15,48 +15,76 @@ export default function IniPage() {
   const [dragData, setDragData] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const handleDragStart = (rowIndex) => {
-    setDragData({ rowIndex });
+  const handleDragStart = (data) => {
+    setDragData(data);
   };
 
-  const handleDropOnRowItem = (targetRowPosition) => {
+  const handleDropOnRowItem = ({ rowPosition, side }) => {
     if (!dragData) return;
 
-    // Clonar filas existentes
-    let newRows = [...pageData.rows];    
-    // Actualizar rowPosition del nuevo bloque
-    const draggedRow = structuredClone(rowCols[dragData.rowIndex]);
-    draggedRow.style.margin = pageData.marginContent;
-    const newRow = {
-      ...draggedRow,
-      rowPosition: targetRowPosition + 1
-    };
-    // Obtener índice en el array
+    let newRows = [...pageData.rows];
+
     const targetIndex = newRows.findIndex(
-      (r) => r.rowPosition === targetRowPosition.rowPosition
+      (r) => r.rowPosition === rowPosition
     );
+
     if (targetIndex === -1) return;
 
-    if (targetRowPosition.side === "top") {
-      // Insertar antes
-      newRows.splice(targetIndex, 0, newRow);
-    } else if (targetRowPosition.side === "bottom") {
-      // Insertar después
-      newRows.splice(targetIndex + 1, 0, newRow);
+    // ==============================
+    // 🔹 MOVER FILA EXISTENTE
+    // ==============================
+    if (dragData.type === "move") {
+      const fromIndex = newRows.findIndex(
+        (r) => r.rowPosition === dragData.rowPosition
+      );
+
+      if (fromIndex === -1) return;
+
+      const [movedRow] = newRows.splice(fromIndex, 1);
+
+      let insertIndex = side === "top" ? targetIndex : targetIndex + 1;
+      if (fromIndex < insertIndex) insertIndex--;
+
+      newRows.splice(insertIndex, 0, movedRow);
     }
 
-    // Recalcular rowPosition para que queden ordenados
+    // ==============================
+    // 🔹 INSERTAR FILA NUEVA
+    // ==============================
+    if (dragData.type === "new") {
+      const draggedRow = structuredClone(rowCols[dragData.rowIndex]);
+      draggedRow.style.margin = pageData.marginContent;
+
+      const newRow = {
+        ...draggedRow,
+        rowPosition: 0,
+      };
+
+      if (side === "top") {
+        newRows.splice(targetIndex, 0, newRow);
+      } else {
+        newRows.splice(targetIndex + 1, 0, newRow);
+      }
+    }
+
+    // ==============================
+    // 🔹 Recalcular posiciones
+    // ==============================
     newRows = newRows.map((r, i) => ({
       ...r,
-      rowPosition: i
+      rowPosition: i,
     }));
 
-    // Actualizar el estado
     setPageData({
       ...pageData,
-        rows: newRows,
+      rows: newRows,
     });
+
+    setDragData(null);
   };
+
+
+
 
   const handleUpdateRow = (updatedRow) => {
     setPageData((prev) => ({
@@ -183,6 +211,7 @@ export default function IniPage() {
                 pageData={pageData}
                 onDropOnRowItem={handleDropOnRowItem}
                 onSelectRow={handleSelectRow}
+                setDragData={setDragData}
               />
             </div>
             <div className="sidebar-component">
