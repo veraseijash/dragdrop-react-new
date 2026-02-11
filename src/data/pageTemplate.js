@@ -16,6 +16,7 @@ export const defaultPageTemplate = {
   marginContent: 'auto',
   rows: [
     {
+      id: crypto.randomUUID(),
       rowPosition: 0,      
       template_list: {
         style: {
@@ -42,9 +43,11 @@ export const defaultPageTemplate = {
         width: '650px',
         maxWidth: '650px',
         margin: 'auto',
+        justifyContent: 'flex-start',
       },
       cols: [
         {
+          id: crypto.randomUUID(),
           colPosition: 0,
           style: {
             width: '100%',
@@ -53,21 +56,16 @@ export const defaultPageTemplate = {
             borderStyle: 'solid',
             borderColor: 'transparent',
             padding: '5px 0px',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
           },
-          content: [
-            {
-              position: 0,
-              class: "module-empty",
-              style: {},
-            }
-          ],
+          content: [],
         },
       ],
     }
   ],
 };
 export const newCol = {
+  id: crypto.randomUUID(),
   colPosition: 0,
   style: {
     width: '5%',
@@ -76,18 +74,13 @@ export const newCol = {
     borderStyle: 'solid',
     borderColor: 'transparent',
     padding: '5px 0px',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
-  content: [
-    {
-      position: 0,
-      class: "module-empty",
-      style: {},
-    }
-  ],
+  content: [],
 }
 export const rowCols = [
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -114,9 +107,11 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
           width: '100%',
@@ -125,19 +120,14 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
     ],
   }, 
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -164,9 +154,11 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
           width: '50%',
@@ -175,18 +167,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 1,
         style: {
           width: '50%',
           backgroundColor: 'transparent',
@@ -194,19 +181,14 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
     ],
   }, 
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -233,9 +215,11 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
           width: '30%',
@@ -244,18 +228,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 1,
         style: {
           width: '70%',
           backgroundColor: 'transparent',
@@ -263,19 +242,14 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
     ],
   }, 
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -302,9 +276,11 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
           width: '40%',
@@ -313,18 +289,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 1,
         style: {
           width: '60%',
           backgroundColor: 'transparent',
@@ -332,19 +303,14 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
     ],
   }, 
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -371,9 +337,11 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
           width: '60%',
@@ -382,18 +350,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 1,
         style: {
           width: '40%',
           backgroundColor: 'transparent',
@@ -401,19 +364,14 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
     ],
   }, 
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -440,9 +398,11 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
           width: '70%',
@@ -451,18 +411,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 1,
         style: {
           width: '30%',
           backgroundColor: 'transparent',
@@ -470,19 +425,14 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
     ],
   }, 
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -509,9 +459,11 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
           width: '33.33333333333333%',
@@ -520,18 +472,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 1,
         style: {
           width: '33.33333333333333%',
           backgroundColor: 'transparent',
@@ -539,18 +486,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 2,
         style: {
           width: '33.33333333333333%',
           backgroundColor: 'transparent',
@@ -558,19 +500,14 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
     ],
   },
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -597,9 +534,11 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
           width: '20%',
@@ -608,18 +547,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 1,
         style: {
           width: '20%',
           backgroundColor: 'transparent',
@@ -627,17 +561,59 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
+        id: crypto.randomUUID(),
+        colPosition: 2,
+        style: {
+          width: '60%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'flex-start',
+        },
+        content: [],
+      },
+    ],
+  },
+  {
+    id: crypto.randomUUID(),
+    rowPosition: 0,       
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
+    style: {
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto',
+      color: '#000000',
+      width: '650px',
+      maxWidth: '650px',
+      margin: 'auto',
+      justifyContent: 'flex-start',
+    },
+    cols: [
+      {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
           width: '60%',
@@ -646,19 +622,42 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
+      },
+      {
+        id: crypto.randomUUID(),
+        colPosition: 1,
+        style: {
+          width: '20%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'flex-start',
+        },
+        content: [],
+      },
+      {
+        id: crypto.randomUUID(),
+        colPosition: 2,
+        style: {
+          width: '20%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'flex-start',
+        },
+        content: [],
       },
     ],
   },
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -685,10 +684,26 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
+        id: crypto.randomUUID(),
         colPosition: 0,
+        style: {
+          width: '20%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'flex-start',
+        },
+        content: [],
+      },
+      {
+        id: crypto.randomUUID(),
+        colPosition: 1,
         style: {
           width: '60%',
           backgroundColor: 'transparent',
@@ -696,18 +711,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 2,
         style: {
           width: '20%',
           backgroundColor: 'transparent',
@@ -715,38 +725,14 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
-      },
-      {
-        colPosition: 0,
-        style: {
-          width: '20%',
-          backgroundColor: 'transparent',
-          borderWidth: '0px',
-          borderStyle: 'solid',
-          borderColor: 'transparent',
-          padding: '5px 0px',
-          justifyContent: 'center',
-        },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
     ],
   },
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -773,68 +759,69 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
-          width: '20%',
+          width: '25%',
           backgroundColor: 'transparent',
           borderWidth: '0px',
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 1,
         style: {
-          width: '60%',
+          width: '25%',
           backgroundColor: 'transparent',
           borderWidth: '0px',
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 2,
         style: {
-          width: '20%',
+          width: '25%',
           backgroundColor: 'transparent',
           borderWidth: '0px',
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
+      },
+      {
+        id: crypto.randomUUID(),
+        colPosition: 3,
+        style: {
+          width: '25%',
+          backgroundColor: 'transparent',
+          borderWidth: '0px',
+          borderStyle: 'solid',
+          borderColor: 'transparent',
+          padding: '5px 0px',
+          justifyContent: 'flex-start',
+        },
+        content: [],
       },
     ],
   },
   {
+    id: crypto.randomUUID(),
     rowPosition: 0,       
     template_list: {
       style: {
@@ -861,116 +848,11 @@ export const rowCols = [
       width: '650px',
       maxWidth: '650px',
       margin: 'auto',
+      justifyContent: 'flex-start',
     },
     cols: [
       {
-        colPosition: 0,
-        style: {
-          width: '25%',
-          backgroundColor: 'transparent',
-          borderWidth: '0px',
-          borderStyle: 'solid',
-          borderColor: 'transparent',
-          padding: '5px 0px',
-          justifyContent: 'center',
-        },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
-      },
-      {
-        colPosition: 0,
-        style: {
-          width: '25%',
-          backgroundColor: 'transparent',
-          borderWidth: '0px',
-          borderStyle: 'solid',
-          borderColor: 'transparent',
-          padding: '5px 0px',
-          justifyContent: 'center',
-        },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
-      },
-      {
-        colPosition: 0,
-        style: {
-          width: '25%',
-          backgroundColor: 'transparent',
-          borderWidth: '0px',
-          borderStyle: 'solid',
-          borderColor: 'transparent',
-          padding: '5px 0px',
-          justifyContent: 'center',
-        },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
-      },
-      {
-        colPosition: 0,
-        style: {
-          width: '25%',
-          backgroundColor: 'transparent',
-          borderWidth: '0px',
-          borderStyle: 'solid',
-          borderColor: 'transparent',
-          padding: '5px 0px',
-          justifyContent: 'center',
-        },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
-      },
-    ],
-  },
-  {
-    rowPosition: 0,       
-    template_list: {
-      style: {
-        backgroundColor: 'transparent',
-        backgroundImage: 'none',
-        backgroundPosition: 'left top',
-        backgroundRepeat: 'no-repeat',
-        borderWidth: '0px',
-        borderStyle: 'solid',
-        borderColor: 'transparent',
-        borderRadius: '0px',
-        color: '#000000',
-        padding: '0px',
-        width: '100%',
-      },
-    },
-    style: {
-      backgroundColor: 'transparent',
-      backgroundImage: 'none',
-      backgroundPosition: 'left top',
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'auto',
-      color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
-      margin: 'auto',
-    },
-    cols: [
-      {
+        id: crypto.randomUUID(),
         colPosition: 0,
         style: {
           width: '16.66666666666667%',
@@ -979,18 +861,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 1,
         style: {
           width: '16.66666666666667%',
           backgroundColor: 'transparent',
@@ -998,18 +875,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 2,
         style: {
           width: '16.66666666666667%',
           backgroundColor: 'transparent',
@@ -1017,18 +889,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 3,
         style: {
           width: '16.66666666666667%',
           backgroundColor: 'transparent',
@@ -1036,18 +903,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 4,
         style: {
           width: '16.66666666666667%',
           backgroundColor: 'transparent',
@@ -1055,18 +917,13 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
       {
-        colPosition: 0,
+        id: crypto.randomUUID(),
+        colPosition: 5,
         style: {
           width: '16.66666666666667%',
           backgroundColor: 'transparent',
@@ -1074,15 +931,9 @@ export const rowCols = [
           borderStyle: 'solid',
           borderColor: 'transparent',
           padding: '5px 0px',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         },
-        content: [
-          {
-            position: 0,
-            class: "module-empty",
-            style: {},
-          }
-        ],
+        content: [],
       },
     ],
   },

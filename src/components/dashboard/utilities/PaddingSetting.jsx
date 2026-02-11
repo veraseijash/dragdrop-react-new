@@ -1,10 +1,15 @@
-import NumberStepper from "../utilities/NumberStepper"
+import NumberStepper from "../utilities/NumberStepper";
 
 export default function PaddingSetting({ style = {}, onChange }) {
+  const getNumber = (value) => {
+    if (!value) return 0;
+    return parseInt(value, 10); // "20px" -> 20
+  };
+
   const updatePadding = (key, value) => {
     onChange({
       ...style,
-      [key]: value,
+      [key]: `${value}px`, // 20 -> "20px"
     });
   };
 
@@ -13,7 +18,7 @@ export default function PaddingSetting({ style = {}, onChange }) {
       <div className="content-col-column">
         <label>Arriba</label>
         <NumberStepper
-          value={style.paddingTop || 0}
+          value={getNumber(style.paddingTop)}
           step={5}
           min={0}
           max={60}
@@ -22,7 +27,7 @@ export default function PaddingSetting({ style = {}, onChange }) {
 
         <label className="mt-2">Abajo</label>
         <NumberStepper
-          value={style.paddingBottom || 0}
+          value={getNumber(style.paddingBottom)}
           step={5}
           min={0}
           max={60}
@@ -33,7 +38,7 @@ export default function PaddingSetting({ style = {}, onChange }) {
       <div className="content-col-column">
         <label>Derecha</label>
         <NumberStepper
-          value={style.paddingRight || 0}
+          value={getNumber(style.paddingRight)}
           step={5}
           min={0}
           max={60}
@@ -42,7 +47,7 @@ export default function PaddingSetting({ style = {}, onChange }) {
 
         <label className="mt-2">Izquierda</label>
         <NumberStepper
-          value={style.paddingLeft || 0}
+          value={getNumber(style.paddingLeft)}
           step={5}
           min={0}
           max={60}

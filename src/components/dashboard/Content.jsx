@@ -1,10 +1,29 @@
-export default function Content() {
+import { dataContent } from "../../data/DataContent";
+
+export default function Content({ setDragData }) {
   return (
-    <>
-      <div>
-        <h3>Contenido</h3>
-        <p>Este es el contenido principal.</p>
-      </div>
-    </>
-  )
+    <div className="content-list">
+      {dataContent.map((item) => (
+        <div
+          key={item.type}
+          className="content-item-2"
+          data-type={item.type}
+          draggable
+          onDragStart={(e) => {
+            // 🔴 OBLIGATORIO PARA FIREFOX
+            e.dataTransfer.setData("text/plain", item.type);
+            e.dataTransfer.effectAllowed = "copy";
+
+            setDragData({
+              type: "content",
+              moduleType: item.type,
+            });
+          }}
+        >
+          <img src={item.icon} alt={item.title} />
+          <span className="mt-1">{item.title}</span>
+        </div>
+      ))}
+    </div>
+  );
 }

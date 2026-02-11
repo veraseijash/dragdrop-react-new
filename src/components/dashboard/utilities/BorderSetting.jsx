@@ -9,58 +9,51 @@ const SIDES = [
   { key: "Left", label: "Izquierda" },
 ];
 
-export default function BorderSetting({ border, setBorder }) {
+export default function BorderSetting({ style = {}, setStyle }) {
 
-  // Inicializar estilos si no existen
+  // Inicializar valores por defecto
   useEffect(() => {
-    const style = border?.style || {};
     const nextStyle = {};
     let hasChange = false;
 
     SIDES.forEach(({ key }) => {
-      const styleKey = `border${key}`;
+      const base = `border${key}`;
 
-      if (!style[`${styleKey}Style`]) {
-        nextStyle[`${styleKey}Style`] = "solid";
+      if (!style[`${base}Style`]) {
+        nextStyle[`${base}Style`] = "solid";
         hasChange = true;
       }
 
-      if (!style[`${styleKey}Width`]) {
-        nextStyle[`${styleKey}Width`] = "0px";
+      if (!style[`${base}Width`]) {
+        nextStyle[`${base}Width`] = "0px";
         hasChange = true;
       }
 
-      if (!style[`${styleKey}Color`]) {
-        nextStyle[`${styleKey}Color`] = "transparent";
+      if (!style[`${base}Color`]) {
+        nextStyle[`${base}Color`] = "transparent";
         hasChange = true;
       }
     });
 
     if (!hasChange) return;
 
-    setBorder((prev) => ({
+    setStyle((prev) => ({
       ...prev,
-      style: {
-        ...prev.style,
-        ...nextStyle,
-      },
+      ...nextStyle,
     }));
-  }, [border, setBorder]);
+  }, [style, setStyle]);
 
   const updateStyle = (key, prop, value) => {
-    setBorder((prev) => ({
+    setStyle((prev) => ({
       ...prev,
-      style: {
-        ...prev.style,
-        [`border${key}${prop}`]: value,
-      },
+      [`border${key}${prop}`]: value,
     }));
   };
 
   return (
     <div className="mt-2">
       {SIDES.map(({ key, label }) => {
-        const width = parseInt(border?.style?.[`border${key}Width`] || 0, 10);
+        const width = parseInt(style[`border${key}Width`] || 0, 10);
 
         return (
           <div key={key} className="div-border">
@@ -70,7 +63,7 @@ export default function BorderSetting({ border, setBorder }) {
               {/* Tipo */}
               <select
                 className="form-control form-select-sm"
-                value={border?.style?.[`border${key}Style`]}
+                value={style[`border${key}Style`]}
                 onChange={(e) =>
                   updateStyle(key, "Style", e.target.value)
                 }
@@ -94,7 +87,7 @@ export default function BorderSetting({ border, setBorder }) {
 
               {/* Color */}
               <ColorSetting
-                color={border?.style?.[`border${key}Color`]}
+                color={style[`border${key}Color`]}
                 onChange={(color) =>
                   updateStyle(key, "Color", color)
                 }

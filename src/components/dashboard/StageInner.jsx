@@ -1,16 +1,29 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { renderContent } from "./utilities/RenderContent";
 
 export default function StageInner({
   pageData,
+  dragData,
   onDropOnRowItem,
+  onDropOnCol,
   onSelectRow,
+  onSelectContent,
   setDragData,
 }) {
+
+  useEffect(() => {
+    console.log("pageData CAMBIÓ:", pageData);
+  }, [pageData]);
+
   const [hoverRow, setHoverRow] = useState(null); // rowPosition actualmente resaltado
   const [hoverSide, setHoverSide] = useState(null); // "top" o "bottom"
-
+  const [hoverCol, setHoverCol] = useState(null);
+  
   
   const handleDragOver = (event, rowPosition) => {
+    // 🚫 si se está arrastrando contenido, no mostrar hover de fila
+    if (dragData?.type === "content") return;
+
     event.preventDefault();
 
     const el = event.currentTarget;
@@ -40,22 +53,24 @@ export default function StageInner({
   };
 
   const handleDragLeave = () => {
+    if (dragData?.type === "content") return;
+
     setHoverRow(null);
     setHoverSide(null);
   };
 
   const rowRefs = useRef({});
-
+  
   return (
     <div className="stage-inner">
       <div className="stageContainer" style={pageData?.style}>          
-        {pageData?.rows.map((row, index) => {
+        {pageData?.rows.map((row) => {
           const isHover = hoverRow === row.rowPosition;
           return (
             <div
               ref={(el) => (rowRefs.current[row.rowPosition] = el)}
               className="row-container-outer"
-              key={row.rowPosition}
+              key={row.id}
             >
               <button
                 className="icon-move"
@@ -120,40 +135,85 @@ export default function StageInner({
                     transition: "border 0.1s",
                   }}
                 >
+                  {row.cols?.map((col) => {
+                    const hasContent = col.content.length > 0;
 
-                  {row.cols?.map((col, cIndex) => (
-                    <div
-                      key={`${index}-${cIndex}`}
-                      data-position={col.colPosition}
-                      className="col-item"
-                      style={col.style}
-                    >
-                      {col.content?.map((item, iIndex) => {
-                        if (item.class === "module-empty") {
-                          return (
+                    return (
+                      <div
+                        key={`${col.id}-${col.content.map(i => i.id).join("_")}`}
+                        data-position={col.colPosition}
+                        className={`col-item ${
+                          dragData?.type === "content" &&
+                          hoverCol?.row === row.rowPosition &&
+                          hoverCol?.col === col.colPosition
+                            ? "col-hover-content"
+                            : ""
+                        }`}
+                        style={col.style}
+                        onDragOver={(e) => {
+                          if (dragData?.type !== "content") return;
+                          e.preventDefault();
+                          setHoverCol({
+                            row: row.rowPosition,
+                            col: col.colPosition,
+                          });
+                        }}
+                        onDragLeave={() => {
+                          if (dragData?.type !== "content") return;
+                          setHoverCol(null);
+                        }}
+                        onDrop={(e) => {
+                          if (dragData?.type !== "content") return;
+                          e.preventDefault();
+                          onDropOnCol({
+                            rowPosition: row.rowPosition,
+                            colPosition: col.colPosition,
+                          });
+                          setHoverCol(null);
+                        }}
+                      >
+                        {/* 🔵 INDICADOR */}
+                        {dragData?.type === "content" &&
+                          hoverCol?.row === row.rowPosition &&
+                          hoverCol?.col === col.colPosition && (
+                            <div className="col-drop-indicator" data-name="arrástralo aquí" />
+                        )}
+
+                        {/* 🧱 PLACEHOLDER */}
+                        {!hasContent && (
+                          <div className="module-empty">
+                            <span className="ico ico-arrow-up-alt1"></span>
+                            <small>Arrastra contenido aquí</small>
+                          </div>
+                        )}
+
+                        {/* 🧱 CONTENIDO */}
+                        {col.content.map((item) => (
+                          <div
+                            key={item.id}
+                            className="outer"
+                            style={item.outerStyle}
+                          >
                             <div
-                              key={`${index}-${cIndex}-${iIndex}`}
-                              className={item.class}
-                              data-position={item.position}
-                              style={item.style}
-                              data-label="Soltar bloques de contenido aquí"
+                              className={`content-item ${item.class}`}
+                              data-name={item.label}
+                              style={item.preStyle}
+                              onClick={(e) => {
+                                  e.stopPropagation(); // ⛔ evita seleccionar la fila
+                                  onSelectContent({
+                                    rowPosition: row.rowPosition,
+                                    colPosition: col.colPosition,
+                                    contentId: item.id,
+                                  });
+                                }}
                             >
-                              <span className="ico ico-arrow-up-alt1"></span>
+                              {renderContent(item)}
                             </div>
-                          );
-                        } else {
-                          return (
-                            <div
-                              key={`${index}-${cIndex}-${iIndex}`}
-                              className="content-item"
-                              data-position={item.position}
-                              style={item.style}
-                            ></div>
-                          );
-                        }
-                      })}
-                    </div>
-                  ))}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>

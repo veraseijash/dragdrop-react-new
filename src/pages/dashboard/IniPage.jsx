@@ -7,6 +7,9 @@ import StageInner from "../../components/dashboard/StageInner";
 import { defaultPageTemplate, rowCols } from "../../data/pageTemplate";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 import RowSetting from "../../components/dashboard/RowSetting";
+import { getTypeContent } from "../../data/TypeContent";
+import logoSmall from "../../assets/images/logo-black.svg";
+import ContentSetting from "../../components/dashboard/ContentSetting";
 
 export default function IniPage() {
   const [activeTab, setActiveTab] = useState("content");
@@ -14,6 +17,7 @@ export default function IniPage() {
   const [pageData, setPageData] = useState(null);
   const [dragData, setDragData] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedContent, setSelectedContent] = useState(null);
 
   const handleDragStart = (data) => {
     setDragData(data);
@@ -21,7 +25,7 @@ export default function IniPage() {
 
   const handleDropOnRowItem = ({ rowPosition, side }) => {
     if (!dragData) return;
-
+    if (dragData.type === 'content') return;
     let newRows = [...pageData.rows];
 
     const targetIndex = newRows.findIndex(
@@ -57,6 +61,7 @@ export default function IniPage() {
 
       const newRow = {
         ...draggedRow,
+        id: crypto.randomUUID(),
         rowPosition: 0,
       };
 
@@ -83,6 +88,119 @@ export default function IniPage() {
     setDragData(null);
   };
 
+  const handleUpdateContent = (updatedContent) => {
+    setPageData((prev) => {
+      const page = structuredClone(prev);
+      let updated = false;
+
+      for (const row of page.rows) {
+        for (const col of row.cols) {
+          const index = col.content.findIndex(
+            (c) => c.id === updatedContent.id
+          );
+
+          if (index !== -1) {
+            col.content[index] = updatedContent;
+            updated = true;
+            break;
+          }
+        }
+        if (updated) break;
+      }
+
+      return updated ? page : prev;
+    });
+
+    setSelectedContent(updatedContent);
+  };
+
+  // ==============================
+  // 🔹 ELIMINAR COMPONENTE
+  // ==============================
+  const handleOnDeleteContent = (contentId) => {
+    setPageData((prev) => {
+      const page = structuredClone(prev);
+      let removed = false;
+
+      for (const row of page.rows) {
+        for (const col of row.cols) {
+          const index = col.content.findIndex(
+            (c) => c.id === contentId
+          );
+
+          if (index !== -1) {
+            col.content.splice(index, 1);
+
+            // Recalcular posiciones si las usas
+            col.content = col.content.map((c, i) => ({
+              ...c,
+              position: i,
+            }));
+
+            removed = true;
+            break;
+          }
+        }
+        if (removed) break;
+      }
+
+      return removed ? page : prev;
+    });
+
+    // cerrar panel de settings
+    setSelectedContent(null);
+  };
+
+
+  // ==============================
+  // 🔹 CLONAR COMPONENTE
+  // ==============================
+  const handleOnCloneContent = (contentId) => {
+    setPageData((prev) => {
+      const page = structuredClone(prev);
+      let cloned = false;
+
+      for (const row of page.rows) {
+        for (const col of row.cols) {
+          const index = col.content.findIndex(
+            (c) => c.id === contentId
+          );
+
+          if (index !== -1) {
+            const original = col.content[index];
+
+            // 🧬 clonar componente completo
+            const clonedContent = structuredClone(original);
+
+            // 🆕 ID totalmente nuevo
+            clonedContent.id = crypto.randomUUID();
+
+            // (opcional pero recomendado)
+            clonedContent.position = index + 1;
+
+            // insertar justo debajo del original
+            col.content.splice(index + 1, 0, clonedContent);
+
+            // 🔢 recalcular posiciones
+            col.content = col.content.map((c, i) => ({
+              ...c,
+              position: i,
+            }));
+
+            cloned = true;
+            break;
+          }
+        }
+        if (cloned) break;
+      }
+
+      return cloned ? page : prev;
+    });
+
+    // cerrar panel / evitar referencias visuales
+    setSelectedContent(null);
+  };
+
 
 
 
@@ -104,6 +222,33 @@ export default function IniPage() {
     );
 
     setSelectedRow(currentRow || null);
+    setSelectedContent(null)
+  };
+  const handleSelectContent = ({ rowPosition, colPosition, contentId }) => {
+    const currentRow = pageData.rows.find(
+      (r) => r.rowPosition === rowPosition
+    );
+
+    if (!currentRow) {
+      setSelectedContent(null);
+      return;
+    }
+
+    const currentCol = currentRow.cols.find(
+      (c) => c.colPosition === colPosition
+    );
+
+    if (!currentCol) {
+      setSelectedContent(null);
+      return;
+    }
+
+    const currentContent = currentCol.content.find(
+      (c) => c.id === contentId
+    );
+
+    setSelectedContent(currentContent || null);
+    setSelectedRow(null); 
   };
 
   const handleDeleteRow = (rowPosition) => {
@@ -159,6 +304,50 @@ export default function IniPage() {
       };
     });
   };
+  // ==============================
+  // 🔹 INSERTAR COMPONENTE
+  // ==============================
+  const handleDropOnCol = ({ rowPosition, colPosition }) => {
+    if (!dragData || dragData.type !== "content") return;
+    const configContent = getTypeContent(dragData.moduleType);
+    console.log('configContent: ', configContent)
+    setPageData((prev) => {
+      const page = structuredClone(prev);
+    console.log('page.rows: ', page.rows)
+
+      const rowIndex = page.rows.findIndex(
+        (r) => r.rowPosition === rowPosition
+      );
+      if (rowIndex === -1) return prev;
+
+      const colIndex = page.rows[rowIndex].cols.findIndex(
+        (c) => c.colPosition === colPosition
+      );
+      if (colIndex === -1) return prev;
+
+      const col = page.rows[rowIndex].cols[colIndex];
+
+      // ➕ agregar nuevo módulo
+      col.content = [
+        ...col.content,
+        {
+          id: crypto.randomUUID(),
+          position: col.content.length,
+          class: dragData.moduleType,
+          outerStyle: configContent.outerStyle,
+          preStyle: configContent.preStyle,
+          style: configContent.style,
+          label: configContent.label,
+          type: configContent.type,
+          content: configContent.content,
+          activeHeads: configContent.activeHeads
+        },
+      ];
+      return page; // ✅ nueva referencia completa
+    });
+
+    setDragData(null);
+  };
 
 
   useEffect(() => {
@@ -176,10 +365,10 @@ export default function IniPage() {
 
 
   useEffect(() => {
-    if (id === "0") {
-      setPageData(defaultPageTemplate);
-    }
-  }, [id]);
+  if (id === "0") {
+    setPageData(defaultPageTemplate);
+  }
+}, []);
 
   if (!pageData) return <p>Cargando...</p>;
 
@@ -188,6 +377,11 @@ export default function IniPage() {
       <div className="editor-conteniner">
         <div className="editor-header">
           <div className="editor-header-left">
+            <div className="logo-small">
+                <a href="#">
+                    <img width="150" src={logoSmall} alt="Logo" />
+                </a>
+            </div>
           </div>
           <div className="editor-header-center"></div>
           <div className="editor-header-right">
@@ -198,7 +392,7 @@ export default function IniPage() {
               data-bs-placement="left" 
               title="Vista previa"
             >
-              <i className="bi bi-file-earmark-code"></i>
+              <i className="bi bi-file-earmark-code fs-2"></i>
             </button>
             <button type="button" className="btn btn-outline-secondary">Exportar</button>
             <button type="button" className="btn btn-primary">Guardar</button>
@@ -209,8 +403,11 @@ export default function IniPage() {
             <div className="page-stage">
               <StageInner
                 pageData={pageData}
+                dragData={dragData}
                 onDropOnRowItem={handleDropOnRowItem}
+                onDropOnCol={handleDropOnCol}
                 onSelectRow={handleSelectRow}
+                onSelectContent={handleSelectContent}
                 setDragData={setDragData}
               />
             </div>
@@ -248,7 +445,7 @@ export default function IniPage() {
               </ul>
               <div>
                 {activeTab === "content" && (
-                  <Content />
+                  <Content setDragData={setDragData} />
                 )}
 
                 {activeTab === "rows" && (
@@ -271,6 +468,13 @@ export default function IniPage() {
         onCloneRow={handleCloneRow}
         canDelete={pageData.rows.length > 1}
         onClose={() => setSelectedRow(null)}
+      />
+      <ContentSetting 
+        content={selectedContent}
+        onClose={() => setSelectedContent(null)}
+        onChangeContent={handleUpdateContent}
+        onDeleteContent={handleOnDeleteContent}
+        onCloneContent={handleOnCloneContent}
       />
 
     </div>

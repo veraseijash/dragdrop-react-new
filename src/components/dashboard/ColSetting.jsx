@@ -2,6 +2,7 @@ import ColorSetting from "../../components/dashboard/utilities/ColorSetting";
 import NumberStepper from "../../components/dashboard/utilities/NumberStepper";
 import BorderSetting from "../../components/dashboard/utilities/BorderSetting";
 import PaddingSetting from "./utilities/PaddingSetting";
+import AlignSetting from "./utilities/AlignSetting";
 
 export default function ColSetting({
   col,
@@ -40,6 +41,19 @@ export default function ColSetting({
           />
         </div>
       </div>
+      <AlignSetting
+        value={col.style?.justifyContent || "flex-start"}
+        name={`col-justify-${col.id}`}
+        onChange={(newValue) => {
+          onChange(index, {
+            ...col,
+            style: {
+              ...col.style,
+              justifyContent: newValue,
+            },
+          });
+        }}
+      />
       <div className="ms-2 mt-2">Relleno del área de la columna</div>
       <PaddingSetting
         style={col.style}
@@ -55,16 +69,23 @@ export default function ColSetting({
       />
       <div className="p-2">Bordes de la columna</div>
       <BorderSetting
-        border={col}
-        setBorder={(updater) => {
-          const updatedCol =
+        style={col.style || {}}
+        setStyle={(updater) => {
+          const newStyle =
             typeof updater === "function"
-              ? updater(col)
+              ? updater(col.style || {})
               : updater;
 
-          onChange(index, updatedCol);
+          onChange(index, {
+            ...col,
+            style: {
+              ...col.style,
+              ...newStyle,
+            },
+          });
         }}
       />
+
     </div>
   )
 }

@@ -5,9 +5,9 @@ import BorderSetting from "../../components/dashboard/utilities/BorderSetting";
 import NumberStepper from "../../components/dashboard/utilities/NumberStepper";
 import ColsSetting from "../../components/dashboard/ColsSetting";
 import PaddingSetting from "./utilities/PaddingSetting";
+import AlignSetting from "./utilities/AlignSetting";
 
 export default function RowSetting({ row, onChangeRow, onDeleteRow, onCloneRow, onClose }) {
-  console.log('row: ', row)
   const [colActive, setColActive] = useState(0);
 
   useEffect(() => {
@@ -30,6 +30,7 @@ export default function RowSetting({ row, onChangeRow, onDeleteRow, onCloneRow, 
   }, [row]);
 
   if (!row) return null;
+  const justifyValue = row.style?.justifyContent || "flex-start";
 
   return (
     <div className={`row-setting-panel ${row ? "open" : ""}`}>
@@ -125,18 +126,18 @@ export default function RowSetting({ row, onChangeRow, onDeleteRow, onCloneRow, 
             <div id="collapseTwo" className="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
               <div className="accordion-body p-0">
                 <BorderSetting
-                  border={row}
-                  setBorder={(updater) => {
-                    const updatedRow =
+                  style={row.style || {}}
+                  setStyle={(updater) => {
+                    const newStyle =
                       typeof updater === "function"
-                        ? updater(row)
+                        ? updater(row.style || {})
                         : updater;
 
                     onChangeRow({
                       ...row,
                       style: {
                         ...row.style,
-                        ...updatedRow.style,
+                        ...newStyle,
                       },
                     });
                   }}
@@ -250,6 +251,19 @@ export default function RowSetting({ row, onChangeRow, onDeleteRow, onCloneRow, 
                 </div>
               </div>
             </div>
+            <AlignSetting
+              value={row.style?.justifyContent || "flex-start"}
+              name={`row-justify-${row.id}`}
+              onChange={(newValue) => {
+                onChangeRow({
+                  ...row,
+                  style: {
+                    ...row.style,
+                    justifyContent: newValue,
+                  },
+                });
+              }}
+            />
           </div>
         </div>
         <div className="accordion">
