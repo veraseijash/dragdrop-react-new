@@ -13,11 +13,17 @@ export const defaultPageTemplate = {
     width: '100%',
   },
   backgroundColorContent: '#f1f1ea',
+  maxwidth: 650,
   marginContent: 'auto',
   rows: [
     {
       id: crypto.randomUUID(),
-      rowPosition: 0,      
+      rowPosition: 0,  
+      preStyle: {
+        width: '100%',        
+        maxWidth: '650px',
+        backgroundColor: 'transparent',
+      },    
       template_list: {
         style: {
           backgroundColor: 'transparent',
@@ -40,8 +46,7 @@ export const defaultPageTemplate = {
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'auto',
         color: '#000000',
-        width: '650px',
-        maxWidth: '650px',
+        width: '100%',
         margin: 'auto',
         justifyContent: 'flex-start',
       },
@@ -81,7 +86,12 @@ export const newCol = {
 export const rowCols = [
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },           
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -104,8 +114,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -128,7 +137,12 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },         
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -151,8 +165,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -189,7 +202,12 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0,  
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -212,8 +230,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -250,7 +267,12 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },             
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -273,8 +295,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -311,7 +332,12 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0,   
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },              
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -334,8 +360,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -372,7 +397,12 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0,  
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -395,8 +425,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -433,7 +462,12 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0,  
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -456,8 +490,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -508,7 +541,12 @@ export const rowCols = [
   },
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },                
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -531,8 +569,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -583,7 +620,12 @@ export const rowCols = [
   },
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0,  
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -606,8 +648,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -658,7 +699,12 @@ export const rowCols = [
   },
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0,  
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -681,8 +727,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -733,7 +778,12 @@ export const rowCols = [
   },
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0,  
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -756,8 +806,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },
@@ -822,7 +871,12 @@ export const rowCols = [
   },
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,       
+    rowPosition: 0, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },                
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -845,8 +899,7 @@ export const rowCols = [
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'auto',
       color: '#000000',
-      width: '650px',
-      maxWidth: '650px',
+      width: '100%',
       margin: 'auto',
       justifyContent: 'flex-start',
     },

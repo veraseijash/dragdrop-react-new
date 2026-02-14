@@ -11,8 +11,6 @@
   --global-font-size: 12px;
   --bs-primary: #0A6E9F;
   --bs-primary-lite: #84A7B7;
-  --bs-tooltip-color: #0A6E9F !important;
-  --bs-tooltip-bg: #0A6E9F !important;
   --bs-link-color: #0A6E9F !important;
   --black: #101218;
   --white: #fff;
@@ -171,7 +169,7 @@
   --tmp-font-size-xl: 1.6667rem;
   --tmp-font-size-xxl: 1.8333rem;
   --tmp-font-size-xxxl: 2rem;
-  --sidebar-width: 411px;
+  --sidebar-width: 550px;
   --sidebar-width-narrow: 351px;
   --border-radius: 4px;
   --tile-hover-box-shadow: 0 6px 10px rgba(0,0,0,.35);
@@ -196,6 +194,17 @@ body {
   font-weight: 400;
   font-family: 'Arimo', open sans, Helvetica, Arial, sans-serif;
   overflow-y: hidden !important;
+  height: 100%;
+}
+body > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 p, ul {
   margin-bottom: 0;
@@ -280,9 +289,26 @@ p, ul {
   grid-template-columns: 1fr;
   grid-template-rows: 68px 1fr 33px;
   height: 100vh;
-  width: 100%;  
+  width: 100%; 
+}
+.loading-item-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.50);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
+}
+.loading-item-overlay > .spinner-container > .ico {
+  font-size: 65px;
+  color: #c2bdbd;
 }
 .editor-header {
+  flex: 0 0 auto;
   color: var(--black);
   background-color: var(--white);
   padding: var(--space-3) var(--space-4);
@@ -309,8 +335,10 @@ p, ul {
   gap: var(--space-4);
 }
 .editor-base-conteniner {
-  flex: 1 0 auto;
-  font-style: normal;
+  flex: 1;
+  min-height: 0;          /* 🔥 permite overflow abajo */
+  display: flex;
+  flex-direction: column;
 }
 .logo-small {
   display: flex;
@@ -319,44 +347,68 @@ p, ul {
   opacity: 1;
 }
 .app-contenier {
-  height: 100%;
+  flex: 1;
+  min-height: 0;          /* 🔥 CLAVE */
   width: 100%;
   min-width: 1024px;
-  border: 0px;
-  background: var(--surface-10);
+  display: flex;
+  flex-flow: row nowrap;
   position: relative;
-  display: -ms-flexbox !important;
-  display: flex !important;
-  -ms-flex-flow: row wrap;
-  flex-flow: row wrap;
+  background: var(--surface-10);
+}
+.files-content {
+  height: calc(100vh - 60px);
+  padding: 20px;
+  overflow-y: auto;
+  background: #f5f5f5;
+}
+.files-main-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  justify-items: start;
+  align-items: start;
+  height: calc(100% - 230px);
+  max-height: calc(100% - 230px);
+  overflow-y: auto;
+  width: 100%;
+}
+.basic-templates-grid {
+  width: 200px;
+  height: 300px;
+  min-width: 200px;
+  min-height: 300px;
+  cursor: pointer;
+  background-color: #F6F6F6;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.basic-templates-grid img {
+  width: 100%;
+  height: auto;
+  max-height: 210px;
+  object-fit: cover;
 }
 .page-stage {
   position: relative;
   border-right: 1px solid var(--widget-bar-border);
   width: 100% !important;
-  height: 100%;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -ms-flex-preferred-size: 100%;
-  flex-basis: 100%;
-  -ms-flex: 1;
-  flex: 1;
-  vertical-align: top;
+  flex: 1 1 auto;
+  min-height: 0;   /* 👈 necesario */
+  height: auto;    /* 👈 evita conflictos con 100% */
   background: var(--stage-background);
-  -webkit-transition: all .15s;
-  transition: all .15s;
-  border-color: var(--widget-bar-border);
-  font-size: var(--tmp-font-size-xs);
 }
 .stage-inner {
-  padding: 20px;
-  display: inline-block;
-  min-width: 100%;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  padding: 20px;
 }
 .stageContainer {
   width: 100%;
@@ -364,12 +416,12 @@ p, ul {
 .rows-content, .row-container-outer {
   position: relative;
 }
-.row-container-outer:hover:not(:has(.content-item:hover)) {
+.row-container-outer:hover:not(:has(.content-item:hover, .content-drop-indicator)) {
   border: 3px solid var(--bs-primary);
   min-height: 60px;
   cursor: pointer;
 }
-.row-container-outer:hover:not(:has(.content-item:hover))::after {
+.row-container-outer:hover:not(:has(.content-item:hover, .content-drop-indicator))::after {
   position: absolute;
   right: -3px;
   top: -24px;
@@ -396,12 +448,35 @@ p, ul {
   color: white;
   font-size: 120%;
 }
+.icon-move-component {
+  position: absolute;
+  z-index: 3;
+  top: calc(50% - 16px);
+  left: -24px;
+  display: none;
+  padding: 2px 8px 0;
+  border: none;
+  background: var(--bs-primary);
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+  cursor: -webkit-grab;
+  cursor: grab !important;
+  color: white;
+  font-size: 120%;
+  height: 30px;
+  width: 24px;
+}
 .row-dragging {
   background-color: rgba(13, 110, 253, 0.1);
   outline: 2px dashed #0d6efd;
 }
 .row-container-outer:hover:not(:has(.content-item:hover)) .icon-move {
   display: inline-block;
+}
+.content-item:hover .icon-move-component {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .row-item {
   display: -ms-flexbox;
@@ -505,23 +580,18 @@ p, ul {
   cursor: -webkit-grab;
   cursor: grab;
 }
-.hover-top {
+.rows-content.hover-top {
   border-top: 5px solid #0A6E9F !important;
   border-bottom: none !important;
   position: relative;
 }
-.hover-bottom {
+.rows-content.hover-bottom {
   border-bottom: 5px solid #0A6E9F !important;
   border-top: none !important;
   position: relative;
 }
-.col-drop-indicator {
-  border-bottom: 5px solid #0A6E9F !important;
-  border-top: none !important;
-  position: relative;
-}
-.hover-top::after,
-.hover-bottom::after {
+.rows-content.hover-top::after,
+.rows-content.hover-bottom::after {
   content: attr(data-name);
   position: absolute;
   left: 50%;
@@ -534,21 +604,6 @@ p, ul {
   white-space: nowrap;
   font-weight: 600;
   z-index: 100;
-}
-.col-drop-indicator::after {
-  content: attr(data-name);
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #0A6E9F;
-  color: white;
-  padding: 2px 8px;
-  font-size: 11px;
-  border-radius: 12px;
-  white-space: nowrap;
-  font-weight: 600;
-  z-index: 100;
-  top: -5px;
 }
 .hover-top::after {
   top: -15px;
@@ -638,11 +693,6 @@ p, ul {
 .stage-wrapper {
   display: flex;
   width: 100%;
-}
-
-.stage-inner {
-  flex: 1;
-  overflow: auto;
 }
 
 /* PANEL ROW SETTING */
@@ -960,6 +1010,142 @@ p, ul {
   text-align: right;
   padding: 0 10px;
   border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+}
+.col-drop-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  pointer-events: none;
+}
+.col-drop-indicator.indicator-top {
+  top: 0;
+  border-top: 3px solid #0A6E9F;
+}
+.col-drop-indicator.indicator-bottom {
+  bottom: 0;
+  border-bottom: 3px solid #0A6E9F !important;
+}
+.col-drop-indicator.indicator-top::after, .col-drop-indicator.indicator-bottom::after {
+  content: attr(data-name);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0A6E9F;
+  color: white;
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 12px;
+  white-space: nowrap;
+  font-weight: 600;
+  z-index: 100;
+  top: -10px;
+}
+
+.content-item {
+  position: relative;
+}
+
+
+.content-drop-indicator {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 0;
+  border-top: 3px solid #0A6E9F;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+
+.col-item:has(.content-item:hover) .content-drop-indicator {
+  opacity: 1;
+}
+
+.content-drop-indicator.indicator-top {
+  top: -2px;
+}
+
+.content-drop-indicator.indicator-bottom {
+  bottom: -2px;
+}
+.content-drop-indicator::after {
+  content: 'arrástralo aquí';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0A6E9F;
+  color: white;
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 12px;
+  white-space: nowrap;
+  font-weight: 600;
+  z-index: 100;
+}
+
+.editor-root:not(.is-moving-content) .rows-content.hover-top {
+  border-top: 5px solid #0A6E9F !important;
+  border-bottom: none !important;
+  position: relative;
+}
+
+.editor-root:not(.is-moving-content) .rows-content.hover-bottom {
+  border-bottom: 5px solid #0A6E9F !important;
+  border-top: none !important;
+  position: relative;
+}
+
+.editor-root:not(.is-moving-content)
+  .rows-content.hover-top::after,
+.editor-root:not(.is-moving-content)
+  .rows-content.hover-bottom::after {
+  content: attr(data-name);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0A6E9F;
+  color: white;
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 12px;
+  white-space: nowrap;
+  font-weight: 600;
+  z-index: 100;
+}
+
+/* 🚫 Cuando estás moviendo contenido → las filas NO existen */
+.editor-root.is-moving-content .rows-content,
+.editor-root.is-moving-content .row-container-outer {
+  pointer-events: none;
+}
+
+/* pero los content-item siguen vivos */
+.editor-root.is-moving-content .content-item {
+  pointer-events: auto;
+}
+
+.rows-content .template-list {
+  margin: 0 auto !important;
+}
+
+.preview-wrapper {
+  display: flex;
+  justify-content: center;   /* centra horizontal */
+  align-items: flex-start;   /* evita que se pegue verticalmente */
+  min-height: 100%;
+  padding: 24px 0;
+}
+.preview-wrapper iframe {
+  width: 680px;              /* o el ancho dinámico del email */
+  max-width: 100%;
+  min-height: 400px;
+  border: none;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  height: calc(100vh - 200px);
 }
 
 @keyframes spin {

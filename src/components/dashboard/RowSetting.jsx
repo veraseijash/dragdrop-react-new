@@ -6,6 +6,7 @@ import NumberStepper from "../../components/dashboard/utilities/NumberStepper";
 import ColsSetting from "../../components/dashboard/ColsSetting";
 import PaddingSetting from "./utilities/PaddingSetting";
 import AlignSetting from "./utilities/AlignSetting";
+import Tippy from '@tippyjs/react';
 
 export default function RowSetting({ row, onChangeRow, onDeleteRow, onCloneRow, onClose }) {
   const [colActive, setColActive] = useState(0);
@@ -15,19 +16,7 @@ export default function RowSetting({ row, onChangeRow, onDeleteRow, onCloneRow, 
       setColActive(0);
     }
   }, [row?.id]);
-  useEffect(() => {
-    if (!row) return;
-
-    const tooltipTriggerList = document.querySelectorAll(
-      '[data-bs-toggle="tooltip"]'
-    );
-
-    tooltipTriggerList.forEach((el) => {
-      if (!el._tooltip) {
-        el._tooltip = new bootstrap.Tooltip(el);
-      }
-    });
-  }, [row]);
+  
 
   if (!row) return null;
   const justifyValue = row.style?.justifyContent || "flex-start";
@@ -37,24 +26,22 @@ export default function RowSetting({ row, onChangeRow, onDeleteRow, onCloneRow, 
       <div className="row-setting-header">
         <span>Propiedades de la fila</span>
         <div className="sidebar-title">
-          <button
-            className="btn-delete"
-            data-bs-toggle="tooltip"
-            data-bs-placement="bottom"
-            title="Eliminar"
-            onClick={() => onDeleteRow(row.rowPosition)}
-          >
-            <i className="bi bi-trash"></i>
-          </button>
-          <button
-            className="btn-clone"
-            data-bs-toggle="tooltip"
-            data-bs-placement="bottom"
-            title="Duplicar"
-            onClick={() => onCloneRow(row)}
-          >
-            <i className="bi bi-copy"></i>
-          </button>
+          <Tippy content="Eliminar" placement="bottom">
+            <button
+              className="btn-delete"
+              onClick={() => onDeleteRow(row.rowPosition)}
+            >
+              <i className="bi bi-trash"></i>
+            </button>
+          </Tippy>
+          <Tippy content="Duplicar" placement="bottom">
+            <button
+              className="btn-clone"
+              onClick={() => onCloneRow(row)}
+            >
+              <i className="bi bi-copy"></i>
+            </button>
+          </Tippy>
 
           <button className="btn-close" onClick={onClose}>✕</button>
         </div>

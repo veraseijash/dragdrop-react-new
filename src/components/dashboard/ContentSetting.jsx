@@ -9,6 +9,7 @@ import SettingSocial from "./content/SettingSocial";
 import SettingVideo from "./content/SettingVideo";
 import SettingHtml from "./content/SettingHtml";
 import SettingGif from "./content/SettingGif.jsx";
+import Tippy from '@tippyjs/react';
 
 export default function ContentSetting({
   content, 
@@ -17,9 +18,7 @@ export default function ContentSetting({
   onDeleteContent,
   onCloneContent,
 
-}) {
-  console.log('content: ', content)
-  
+}) {  
   function renderSettingContent(content) {
     if (!content) return null;
     switch (content.type) {
@@ -93,24 +92,22 @@ export default function ContentSetting({
           </span>
         </span>
         <div className="sidebar-title">
-            <button
-              className="btn-delete"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Eliminar"
-              onClick={() => onDeleteContent(content.id)}
-            >
-              <i className="bi bi-trash"></i>
-            </button>
-            <button
-              className="btn-clone"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Duplicar"
-              onClick={() => onCloneContent(content.id)}
-            >
-              <i className="bi bi-copy"></i>
-            </button>
+            <Tippy content="Eliminar" placement="bottom">
+              <button
+                className="btn-delete"
+                onClick={() => onDeleteContent(content.id)}
+              >
+                <i className="bi bi-trash"></i>
+              </button>
+            </Tippy>
+             <Tippy content="Duplicar" placement="bottom">
+              <button
+                className="btn-clone"
+                onClick={() => onCloneContent(content.id)}
+              >
+                <i className="bi bi-copy"></i>
+              </button>
+            </Tippy>
            <button className="btn-close" onClick={onClose}>✕</button>
         </div>
       </div>

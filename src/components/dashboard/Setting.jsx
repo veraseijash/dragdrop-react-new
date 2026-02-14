@@ -4,14 +4,14 @@ import ColorSetting from "../../components/dashboard/utilities/ColorSetting";
 import FontFamilySetting from "../../components/dashboard/utilities/FontFamilySetting";
 
 export default function Setting({ pageData, setPageData }) {
-  const [width, setWidth] = useState(650);
+  const [width, setWidth] = useState(pageData?.maxwidth || 650);
 
   useEffect(() => {
-    if (pageData?.template_list?.style?.width) {
-      const rawValue = pageData.template_list.style.width; // ejemplo: "650px"
-      setWidth(parseInt(rawValue)); // convierte a número
-    }
-  }, [pageData]);
+  if (pageData?.maxwidth) {
+    setWidth(pageData.maxwidth);
+  }
+}, [pageData?.maxwidth]);
+
 
   const handleWidthChange = (val) => {
     setWidth(val);
@@ -20,15 +20,24 @@ export default function Setting({ pageData, setPageData }) {
       ...prev,
       rows: prev.rows.map((row) => ({
         ...row,
+
+        // 👇 aquí vive ahora el ancho REAL del contenido
+        preStyle: {
+          ...row.preStyle,
+          maxWidth: val + "px",
+        },
+
+        // 👇 esto NO representa el ancho visual, es solo compatibilidad email
         style: {
           ...row.style,
-          width: val + "px",
-          maxWidth: val + "px",
+          width: "100%",
+          maxWidth: "100%",
         },
       })),
     }));
-
   };
+
+
 
 
   return (
@@ -122,13 +131,25 @@ export default function Setting({ pageData, setPageData }) {
                     onChange={(newColor) => {
                       setPageData((prev) => ({
                         ...prev,
+
+                        // 👇 fondo general del email
                         style: {
                           ...prev.style,
                           backgroundColor: newColor,
                         },
+
+                        // 👇 sincroniza con template_list (MUY IMPORTANTE)
+                        template_list: {
+                          ...prev.template_list,
+                          style: {
+                            ...prev.template_list?.style,
+                            backgroundColor: newColor,
+                          },
+                        },
                       }));
                     }}
                   />
+
                 </div>
               </div>
               <div className="content-setting-dos">

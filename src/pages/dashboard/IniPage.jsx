@@ -1,15 +1,21 @@
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Rows from "../../components/dashboard/DataRows";
 import Content from "../../components/dashboard/Content";
 import Setting from "../../components/dashboard/Setting";
 import StageInner from "../../components/dashboard/StageInner";
 import { defaultPageTemplate, rowCols } from "../../data/pageTemplate";
-import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 import RowSetting from "../../components/dashboard/RowSetting";
 import { getTypeContent } from "../../data/TypeContent";
 import logoSmall from "../../assets/images/logo-black.svg";
 import ContentSetting from "../../components/dashboard/ContentSetting";
+import { createTemplate, updateTemplate, getTemplate, generateImage } from "../../services/Services";
+import { buildEmailHtml } from "../../data/EmailBuilder";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Tippy from '@tippyjs/react';
+import PreviewModal from "../../components/dashboard/utilities/PreviewModal";
 
 export default function IniPage() {
   const [activeTab, setActiveTab] = useState("content");
@@ -18,6 +24,15 @@ export default function IniPage() {
   const [dragData, setDragData] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
   const [selectedContent, setSelectedContent] = useState(null);
+  const [templateName, setTemplateName] = useState("");
+  const [openPreviewModal, setOpenPreviewModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+  if (pageData?.name) {
+    setTemplateName(pageData.name);
+  }
+}, [pageData]);
 
   const handleDragStart = (data) => {
     setDragData(data);
@@ -57,7 +72,12 @@ export default function IniPage() {
     // ==============================
     if (dragData.type === "new") {
       const draggedRow = structuredClone(rowCols[dragData.rowIndex]);
-      draggedRow.style.margin = pageData.marginContent;
+
+      draggedRow.style = {
+        ...draggedRow.style,
+        margin: pageData.marginContent,
+        backgroundColor: pageData.backgroundColorContent, // 👈 aquí lo inyectas
+      };
 
       const newRow = {
         ...draggedRow,
@@ -305,15 +325,15 @@ export default function IniPage() {
     });
   };
   // ==============================
-  // 🔹 INSERTAR COMPONENTE
-  // ==============================
-  const handleDropOnCol = ({ rowPosition, colPosition }) => {
+// 🔹 INSERTAR COMPONENTE (con TOP / BOTTOM)
+// ==============================
+  const handleDropOnCol = ({ rowPosition, colPosition, side }) => {
     if (!dragData || dragData.type !== "content") return;
+
     const configContent = getTypeContent(dragData.moduleType);
-    console.log('configContent: ', configContent)
+
     setPageData((prev) => {
       const page = structuredClone(prev);
-    console.log('page.rows: ', page.rows)
 
       const rowIndex = page.rows.findIndex(
         (r) => r.rowPosition === rowPosition
@@ -327,75 +347,281 @@ export default function IniPage() {
 
       const col = page.rows[rowIndex].cols[colIndex];
 
-      // ➕ agregar nuevo módulo
-      col.content = [
-        ...col.content,
-        {
-          id: crypto.randomUUID(),
-          position: col.content.length,
-          class: dragData.moduleType,
-          outerStyle: configContent.outerStyle,
-          preStyle: configContent.preStyle,
-          style: configContent.style,
-          label: configContent.label,
-          type: configContent.type,
-          content: configContent.content,
-          activeHeads: configContent.activeHeads
-        },
-      ];
-      return page; // ✅ nueva referencia completa
+      // 🆕 Crear nuevo componente
+      const newContent = {
+        id: crypto.randomUUID(),
+        position: 0,
+        class: dragData.moduleType,
+        outerStyle: configContent.outerStyle,
+        preStyle: configContent.preStyle,
+        style: configContent.style,
+        label: configContent.label,
+        type: configContent.type,
+        content: configContent.content,
+        activeHeads: configContent.activeHeads,
+      };
+
+      let newContentArray = [...col.content];
+
+      // ==============================
+      // 🔥 INSERTAR SEGÚN POSICIÓN VISUAL
+      // ==============================
+      if (side === "top") {
+        newContentArray.unshift(newContent); // insertar arriba
+      } else {
+        newContentArray.push(newContent); // insertar abajo
+      }
+
+      // 🔢 Recalcular posiciones internas
+      newContentArray = newContentArray.map((c, i) => ({
+        ...c,
+        position: i,
+      }));
+
+      page.rows[rowIndex].cols[colIndex].content = newContentArray;
+
+      return page;
     });
 
     setDragData(null);
   };
 
+  // ==============================
+  // 🔹 MOVER COMPONENTE EXISTENTE
+  // ==============================
+  const handleMoveContent = ({
+    fromRow,
+    fromCol,
+    contentId,
+    toRow,
+    toCol,
+    targetId,
+    side,
+  }) => {
+    setPageData((prev) => {
+      const page = structuredClone(prev);
 
-  useEffect(() => {
-    if (!pageData) return;
+      const sourceRow = page.rows.find((r) => r.rowPosition === fromRow);
+      const targetRow = page.rows.find((r) => r.rowPosition === toRow);
 
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+      if (!sourceRow || !targetRow) return prev;
 
-    tooltipTriggerList.forEach((el) => {
-      // Evitar tooltips duplicados
-      if (!el._tooltip) {
-        el._tooltip = new bootstrap.Tooltip(el);
+      const sourceCol = sourceRow.cols.find((c) => c.colPosition === fromCol);
+      const targetCol = targetRow.cols.find((c) => c.colPosition === toCol);
+
+      if (!sourceCol || !targetCol) return prev;
+
+      // 🔥 encontrar item origen SIN removerlo aún
+      const sourceIndex = sourceCol.content.findIndex((c) => c.id === contentId);
+      if (sourceIndex === -1) return prev;
+
+      const targetIndex = targetCol.content.findIndex((c) => c.id === targetId);
+      if (targetIndex === -1) return prev;
+
+      const movedItem = sourceCol.content[sourceIndex];
+
+      // ===============================
+      // 🧠 CALCULAR ÍNDICE DESTINO REAL
+      // ===============================
+      let insertIndex = side === "bottom"
+        ? targetIndex + 1
+        : targetIndex;
+
+      // 🔥 si es la misma columna y vienes desde arriba,
+      // hay que compensar porque luego lo quitaremos
+      if (sourceCol === targetCol && sourceIndex < insertIndex) {
+        insertIndex--;
       }
-    });
-  }, [pageData]);
 
+      // ===============================
+      // 🔥 AHORA sí removemos
+      // ===============================
+      sourceCol.content.splice(sourceIndex, 1);
+
+      // insertar en destino
+      targetCol.content.splice(insertIndex, 0, movedItem);
+
+      // 🔢 recalcular posiciones
+      sourceCol.content = sourceCol.content.map((c, i) => ({
+        ...c,
+        position: i,
+      }));
+
+      if (sourceCol !== targetCol) {
+        targetCol.content = targetCol.content.map((c, i) => ({
+          ...c,
+          position: i,
+        }));
+      }
+
+      return page;
+    });
+
+    setDragData(null);
+  };
 
   useEffect(() => {
-  if (id === "0") {
-    setPageData(defaultPageTemplate);
-  }
-}, []);
+    const fetchPageData = async () => {
+      if (id === "0") {
+        // Nuevo template
+        setPageData(defaultPageTemplate);
+      } else {
+        // Traer template existente
+        try {
+          const data = await getTemplate(id);
+          if (data?.template_list) {
+            data.template_list.id = id;
+            data.template_list.name= data.name;
+            console.log('data.template_list: ', data.template_list)
+            setPageData(data.template_list); // ⚡ aquí asignamos solo el JSON del editor
+          } else {
+            console.warn("Template no tiene template_list");
+            setPageData(defaultPageTemplate); // fallback
+          }
+        } catch (error) {
+          console.error("Error cargando template:", error);
+          setPageData(defaultPageTemplate); // fallback
+        }
+      }
+    };
+
+    fetchPageData();
+  }, [id]);
 
   if (!pageData) return <p>Cargando...</p>;
 
+  // ===============================
+  // 🧠 REGISTRAR TEMPLATE
+  // ===============================
+  const handleSaveTemplate = async () => {
+    if (!templateName.trim()) {
+        toast.error("Debe ingresar un nombre para la plantilla");
+        return;
+      }
+    try {      
+      setIsLoading(true);
+      const htmlGenerated = buildEmailHtml(pageData);
+      const image64 = await generateImage(htmlGenerated);
+      // 🔹 Construir objeto requerido por backend
+      const selectedTemplate = {
+        user_id: 1,
+        name: templateName,
+        template_list: pageData,   // 👉 todo el JSON del editor
+        html: htmlGenerated,
+        image: image64,
+      };
+      let response;
+
+      // ==============================
+      // 🆕 CREAR
+      // ==============================
+      if (!pageData.id || pageData.id === 0) {
+        response = await createTemplate(selectedTemplate);
+
+        // ⚠️ backend devuelve el nuevo id
+        setPageData((prev) => ({
+          ...prev,
+          id: response.id,
+        }));
+      }
+      // ==============================
+      // ✏️ ACTUALIZAR
+      // ==============================
+      else {
+        response = await updateTemplate(pageData.id, selectedTemplate);
+      }
+
+      toast.success("Plantilla guardada correctamente");
+
+    } catch (error) {
+      console.error("Error guardando plantilla", error);
+      toast.error("Ocurrió un error al guardar");
+    } finally {
+      // 🔹 Desactivar loader
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div>
+    <div
+      className={`editor-root ${
+        dragData?.type === "move-content" ? "is-moving-content" : ""
+      }`}
+    >
+      {isLoading && (
+        <div className="loading-item-overlay">
+          <div className="spinner-container">
+            <span className="ico ico-spinner10 spinner-rotate" />
+            <span>Registrando...</span>
+          </div>
+        </div>
+      )}
       <div className="editor-conteniner">
+        
         <div className="editor-header">
           <div className="editor-header-left">
             <div className="logo-small">
-                <a href="#">
-                    <img width="150" src={logoSmall} alt="Logo" />
-                </a>
-            </div>
+              <a href="#">
+                  <img width="150" src={logoSmall} alt="Logo" />
+              </a>
+            </div>            
+            <Tippy content="Ir a inicio" placement="right">
+              <Link 
+                to="/" 
+                className="btn btn-outline-primary"
+                style={{paddingTop: '7px'}}
+              >
+                <span className="ico ico-arrow-left1"></span>
+              </Link>
+            </Tippy>
           </div>
           <div className="editor-header-center"></div>
           <div className="editor-header-right">
-            <button 
-              type="button" 
-              className="btn btn-link" 
-              data-bs-toggle="tooltip" 
-              data-bs-placement="left" 
-              title="Vista previa"
-            >
-              <i className="bi bi-file-earmark-code fs-2"></i>
-            </button>
+            <Tippy content="Vista previa" placement="left">
+              <button 
+                type="button" 
+                className="btn btn-link"
+                onClick={() => setOpenPreviewModal(true)}
+              >
+                <i className="bi bi-file-earmark-code fs-2"></i>
+              </button>
+            </Tippy>
             <button type="button" className="btn btn-outline-secondary">Exportar</button>
-            <button type="button" className="btn btn-primary">Guardar</button>
+            <div className="dropdown">
+              <button 
+                type="button" 
+                className="btn btn-primary dropdown-toggle no-caret"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Guardar
+              </button>
+              <div
+                className="dropdown-menu p-3"
+                style={{ width: "320px" }}
+                data-bs-auto-close="outside"
+              >
+                <label for="templateName" className="form-label">Nombre de la plantilla</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="templateName"
+                  value={templateName}
+                  onChange={(e) => setTemplateName(e.target.value)}
+                />
+                <div className="d-flex justify-content-end mt-4 gap-3">
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary"
+                    onClick={handleSaveTemplate}
+                  >
+                    Registrar
+                  </button>
+
+                </div>
+              </div>
+            </div>
+            
           </div>
         </div>
         <div className="editor-base-conteniner">
@@ -409,7 +635,9 @@ export default function IniPage() {
                 onSelectRow={handleSelectRow}
                 onSelectContent={handleSelectContent}
                 setDragData={setDragData}
+                onMoveContent={handleMoveContent}   // 👈 NUEVO
               />
+
             </div>
             <div className="sidebar-component">
               <ul className="nav nav-tabs nav-tabs-dd">
@@ -476,7 +704,21 @@ export default function IniPage() {
         onDeleteContent={handleOnDeleteContent}
         onCloneContent={handleOnCloneContent}
       />
-
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
+      <PreviewModal
+        open={openPreviewModal}
+        onClose={() => setOpenPreviewModal(false)}
+        pageData={pageData}
+      />
     </div>
     
   );

@@ -1,15 +1,17 @@
+import { useState } from "react";
 import NumberStepper from "../utilities/NumberStepper";
 import ColorSetting from "../utilities/ColorSetting";
 import AlignCenterSetting from "../utilities/AlignCenterSetting";
 import PaddingSetting from "../utilities/PaddingSetting";
+import TableContentModal from "./TableContentModal";
 
 export default function SettingTable({ content, onUpdate }) {
   const colNumber = content.content.heads[0].cols.length;
   const rowNumber = content.content.rows.length;
-
   const borderStyle = content.content.headStyle.borderStyle || "solid";
   const borderWidth = parseInt(content.content.headStyle.borderWidth, 10) || 1;
   const borderColor = content.content.headStyle.borderColor || "#DDDDDD";
+  const [openEditor, setOpenEditor] = useState(false);
 
   const adjustCols = (cols, newLength) => {
     const result = [...cols];
@@ -140,8 +142,16 @@ export default function SettingTable({ content, onUpdate }) {
 
           <div id="collapseOne" className="accordion-collapse collapse show">
             <div className="accordion-body p-0">
-
-              <div className="content-setting-dos border-bottom-0">
+              <div className="p-2">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setOpenEditor(true)}
+                >
+                  Editar contenido de la tabla
+                </button>
+              </div>
+              
+              <div className="mt-2 content-setting-dos border-bottom-0">
                 <div className="content-col">Columnas</div>
                 <div className="content-col">
                   <NumberStepper
@@ -517,6 +527,14 @@ export default function SettingTable({ content, onUpdate }) {
           </div>
         </div>
       </div>
+      <TableContentModal
+        open={openEditor}
+        onClose={() => setOpenEditor(false)}
+        content={content}
+        onSave={(updatedContent) => {
+          onUpdate(updatedContent);
+        }}
+      />
     </div>
   );
 }

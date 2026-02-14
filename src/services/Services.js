@@ -54,3 +54,31 @@ export const getGiphy = async (search) => {
     return [];
   }
 }
+
+export const createTemplate = async (template) => {
+  const { data } = await api.post(`templates`, template);
+  return data;
+}
+
+export const updateTemplate = async (id, template) => {
+  const { data } = await api.patch(`templates/${id}`, template);
+  return data;
+}
+
+export const generateImage = async (html) => {
+  const { data } = await api.post(`html-to-image`, {
+    html,
+    type: "png",
+  });
+
+  return data.image; // 👈 base64 listo
+};
+export const getTemplatesUser = async (userId) => {
+  const { data } = await api.get(`templates/user/${userId}`);
+  return data;
+}
+
+export const getTemplate = async (id) => {
+  const { data } = await api.get(`templates/${id}`);
+  return data;
+}

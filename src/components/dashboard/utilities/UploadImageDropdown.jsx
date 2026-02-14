@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function UploadImageDropdown({ onSubmit }) {
   const fileRef = useRef(null);
@@ -10,7 +12,7 @@ export default function UploadImageDropdown({ onSubmit }) {
     if (!selected) return;
 
     if (!selected.type.startsWith("image/")) {
-      alert("Solo se permiten imágenes");
+      toast.error("Solo se permiten imágenes");
       return;
     }
 
@@ -99,6 +101,16 @@ export default function UploadImageDropdown({ onSubmit }) {
         </button>
 
       </div>
+       <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
     </div>
   );
 }

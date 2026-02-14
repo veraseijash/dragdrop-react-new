@@ -1,7 +1,6 @@
 import React from "react";
 
 export function renderContent(item) {
-  console.log('item: ', item)
   switch (item.type) {
     case "module-image":
       return (
