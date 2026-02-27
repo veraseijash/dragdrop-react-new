@@ -9,6 +9,7 @@ import SettingSocial from "./content/SettingSocial";
 import SettingVideo from "./content/SettingVideo";
 import SettingHtml from "./content/SettingHtml";
 import SettingGif from "./content/SettingGif.jsx";
+import SettingMenu from "./content/SettingMenu.jsx";
 import Tippy from '@tippyjs/react';
 
 export default function ContentSetting({
@@ -75,6 +76,11 @@ export default function ContentSetting({
         />;
       case "module-gif":
         return <SettingGif
+         content={content}
+         onUpdate={onChangeContent}
+        />;
+      case "module-menu":
+        return <SettingMenu
          content={content}
          onUpdate={onChangeContent}
         />;

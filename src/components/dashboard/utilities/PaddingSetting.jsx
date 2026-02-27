@@ -21,7 +21,7 @@ export default function PaddingSetting({ style = {}, onChange }) {
           value={getNumber(style.paddingTop)}
           step={5}
           min={0}
-          max={60}
+          max={1000}
           onChange={(value) => updatePadding("paddingTop", value)}
         />
 
@@ -30,7 +30,7 @@ export default function PaddingSetting({ style = {}, onChange }) {
           value={getNumber(style.paddingBottom)}
           step={5}
           min={0}
-          max={60}
+          max={1000}
           onChange={(value) => updatePadding("paddingBottom", value)}
         />
       </div>
@@ -41,7 +41,7 @@ export default function PaddingSetting({ style = {}, onChange }) {
           value={getNumber(style.paddingRight)}
           step={5}
           min={0}
-          max={60}
+          max={1000}
           onChange={(value) => updatePadding("paddingRight", value)}
         />
 
@@ -50,7 +50,7 @@ export default function PaddingSetting({ style = {}, onChange }) {
           value={getNumber(style.paddingLeft)}
           step={5}
           min={0}
-          max={60}
+          max={1000}
           onChange={(value) => updatePadding("paddingLeft", value)}
         />
       </div>

@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 export default function UploadImageDropdown({ onSubmit }) {
   const fileRef = useRef(null);
@@ -101,16 +100,6 @@ export default function UploadImageDropdown({ onSubmit }) {
         </button>
 
       </div>
-       <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        pauseOnHover
-        draggable
-        theme="light"
-      />
     </div>
   );
 }

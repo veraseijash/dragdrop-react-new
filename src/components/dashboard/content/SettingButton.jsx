@@ -17,7 +17,7 @@ export default function SettingButton({ content, onUpdate }) {
       },
     });
   };
-
+console.log('boton: ', content)
   const updateFeature = (changes) => {
     updateContent({
       feature: {
@@ -42,20 +42,7 @@ export default function SettingButton({ content, onUpdate }) {
     });
   };
 
-  const isAutoWidth = content.preStyle?.width === "auto";
-  const handleAutoWidthChange = (e) => {
-    const checked = e.target.checked;
-
-    onUpdate({
-      ...content,
-      preStyle: {
-        ...content.preStyle,
-        width: checked ? "auto" : "50%", // o el valor que quieras cuando NO sea auto
-      },
-    });
-  };
-
-  const widthValue = content.preStyle?.width;
+  const widthValue = content.content?.width;
 
   const width =
     typeof widthValue === "string" && widthValue.endsWith("%")
@@ -65,9 +52,21 @@ export default function SettingButton({ content, onUpdate }) {
   const handleWidthChange = (newValue) => {
     onUpdate({
       ...content,
-      preStyle: {
-        ...content.preStyle,
-        width: `${newValue}%`,
+      content: {
+        ...content.content,
+        width: newValue,
+      },
+    });
+  };
+
+  const height = content.content?.height;
+
+  const handleHeigthChange = (newValue) => {
+    onUpdate({
+      ...content,
+      content: {
+        ...content.content,
+        height: newValue,
       },
     });
   };
@@ -83,20 +82,20 @@ export default function SettingButton({ content, onUpdate }) {
       : content?.style?.letterSpacing || 0;
 
   const borderRadioNumber =
-    typeof content?.preStyle?.borderRadius === "string"
-      ? parseInt(content.preStyle.borderRadius, 10)
-      : content?.preStyle?.borderRadius || 0;
+    typeof content?.style?.borderRadius === "string"
+      ? parseInt(content.style.borderRadius, 10)
+      : content?.style?.borderRadius || 0;
   
   const handleStyleChange = (updater) => {
     const newStyle =
       typeof updater === "function"
-        ? updater(content.preStyle || {})
+        ? updater(content.style || {})
         : updater;
 
     onUpdate({
       ...content,
-      preStyle: {
-        ...content.preStyle,
+      style: {
+        ...content.style,
         ...newStyle,
       },
     });
@@ -242,34 +241,6 @@ export default function SettingButton({ content, onUpdate }) {
                 </div>
                 <div className="content-setting-dos border-bottom-0">
                   <div className="content-col">
-                    Ancho automático
-                  </div>
-                  <div className="content-col">
-                    <div className="form-check form-switch">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="switchAuto"
-                        checked={isAutoWidth}
-                        onChange={handleAutoWidthChange}
-                      />
-                    </div>
-                  </div>
-                </div> 
-                {!isAutoWidth && (
-                  <RangeSetting
-                    id="botonWidth"
-                    label="Ancho"
-                    min={20}
-                    max={100}
-                    step={5}
-                    value={width}
-                    unit="%"
-                    onChange={handleWidthChange}
-                  />
-                )}
-                <div className="content-setting-dos border-bottom-0">
-                  <div className="content-col">
                     Fuente predeterminada
                   </div>
                   <div className="content-col">
@@ -360,12 +331,12 @@ export default function SettingButton({ content, onUpdate }) {
                   </div>
                   <div className="content-col">
                     <ColorSetting
-                      color={content?.preStyle?.backgroundColor || "#7747FF"}
+                      color={content?.style?.backgroundColor || "#7747FF"}
                       onChange={(val) => {
                         onUpdate({
                           ...content,
-                          preStyle: {
-                            ...content.preStyle,
+                          style: {
+                            ...content.style,
                             backgroundColor: val,
                           },
                         });
@@ -432,30 +403,39 @@ export default function SettingButton({ content, onUpdate }) {
             <div id="collapseThree" className="accordion-collapse collapse show">
               <div className="accordion-body p-0">
                 <CenterSetting
-                  value={content?.outerStyle?.textAlign}
+                  value={content?.content?.align}
                   name={`margin-1`}
                   onChange={(val) => {
                     onUpdate({
                       ...content,
-                      outerStyle: {
-                        ...content.outerStyle,
-                        textAlign: val,
+                      content: {
+                        ...content.content,
+                        align: val,
                       },
                     });
                   }}
+
                 />
                 <div className="ms-2 mt-2">Relleno del área de botón</div>
-                <PaddingSetting
-                  style={content.preStyle}
-                  onChange={(newStyle) => {
-                    onUpdate({
-                      ...content,
-                      preStyle: {
-                        ...content.preStyle,
-                        ...newStyle,
-                      },
-                    });
-                  }}
+                <RangeSetting
+                  id="botonWidth"
+                  label="Ancho"
+                  min={5}
+                  max={100}
+                  step={5}
+                  value={width}
+                  unit="%"
+                  onChange={handleWidthChange}
+                />
+                <RangeSetting
+                  id="botonWidth"
+                  label="Alto"
+                  min={20}
+                  max={100}
+                  step={1}
+                  value={height}
+                  unit="px"
+                  onChange={handleHeigthChange}
                 />
                 <div className="ms-2 mt-2">Margen del botón</div>
                 <PaddingSetting
@@ -472,7 +452,7 @@ export default function SettingButton({ content, onUpdate }) {
                 />
                 <div className="ms-2 mt-2">Bordes del botón</div>
                 <BorderSetting
-                  style={content.preStyle || {}}
+                  style={content.style || {}}
                   setStyle={handleStyleChange}
                 />
                 <div className="content-setting-dos">
@@ -488,8 +468,8 @@ export default function SettingButton({ content, onUpdate }) {
                       onChange={(val) => {
                         onUpdate({
                           ...content,
-                          preStyle: {
-                            ...content.preStyle,
+                          style: {
+                            ...content.style,
                             borderRadius: `${val}px`,
                           },
                         });

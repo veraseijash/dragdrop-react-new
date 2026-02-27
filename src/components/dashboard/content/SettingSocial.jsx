@@ -62,8 +62,8 @@ export default function SettingSocial({ content, onUpdate }) {
   };
 
   const handleDragStart = (index) => {
-  setDragIndex(index);
-};
+    setDragIndex(index);
+  };
 
 const handleDragOver = (e, index) => {
   e.preventDefault(); // obligatorio
@@ -282,7 +282,7 @@ const iconSpacing =
               <div className="accordion-body p-0">                
                 <div className="content-setting-dos border-bottom-0">
                   <div className="content-col">
-                    Tamaño de fuente
+                    Espacio entre logo
                   </div>
                   <div className="content-col" style={{width: "120px"}}>
                     <select

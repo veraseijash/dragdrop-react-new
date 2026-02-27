@@ -51,80 +51,48 @@ export default function ImagesList({ onSelect, refreshKey }) {
     return <div className="p-3">No hay imágenes disponibles</div>;
   }
 
-  function getGridStyle(image) {
-    const width = Number(image.width);
-    const height = Number(image.height);
-
-    const style = {};
-
-    if (height > 1.5 * width) {
-      style.gridRowStart = "span 2";
-    }
-
-    if (height >= 2 * width) {
-      style.gridRowStart = "span 3";
-    }
-
-    if (width > 1.5 * height) {
-      style.gridColumnStart = "span 2";
-    }
-
-    if (width >= 2 * height) {
-      style.gridColumnStart = "span 3";
-    }
-
-    return style;
-  }
-
-
   return (
-    <div className="image-list">
+    <div className="np-gallery">
       {listImg.map((img) => {
-        // ✔ definido aquí
         const isDeleting = deletingId === img.public_id;
 
         return (
-          <div
-            key={img.asset_id}
-            className="gallery-item"
-            style={getGridStyle(img)}
-          >
-            {/* overlay SOLO para este item */}
+          <div key={img.asset_id} className="np-gallery-item">
+            
+            {/* Overlay de eliminación */}
             {isDeleting && (
-              <div className="image-item-overlay">
-                <div className="spinner-container">
-                  <span className="ico ico-spinner10 spinner-rotate" />
-                  <span>Eliminando...</span>
-                </div>
+              <div className="np-loading">
+                <span className="ico ico-spinner10 spinner-rotate" />
+                <span>Eliminando...</span>
               </div>
             )}
 
-            <div className="delete-img">
-              <button
-                className="btn btn-sm"
-                type="button"
-                disabled={isDeleting}
-                onClick={() => handleDelete(img)}
-              >
-                ✕
-              </button>
-            </div>
+            {/* Botón eliminar */}
+            <button
+              className="np-delete-btn"
+              disabled={isDeleting}
+              onClick={() => handleDelete(img)}
+            >
+              ✕
+            </button>
 
+            {/* Imagen */}
             <img
               src={img.secure_url}
               alt={img.display_name}
+              loading="lazy"
             />
 
-            <div className="gallery-btn">
+            {/* Hover actions */}
+            <div className="np-overlay">
               <button
-                className="btn btn-primary btn-sm"
-                type="button"
                 disabled={isDeleting}
                 onClick={() => onSelect?.(img)}
               >
                 Seleccionar
               </button>
             </div>
+
           </div>
         );
       })}

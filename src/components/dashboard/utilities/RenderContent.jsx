@@ -68,18 +68,18 @@ export function renderContent(item) {
     case "module-list": {
       const parser = new DOMParser();
       const doc = parser.parseFromString(item.content.text, "text/html");
-
-      const listStyle = item.style?.listStyleType || "disc";
-
-      // aplicar a TODOS los <ul>
+      // aplicar estilos al UL que ya existe
       doc.body.querySelectorAll("ul").forEach((ul) => {
-        ul.style.listStyleType = listStyle;
-        ul.style.paddingLeft = ul.style.paddingLeft || "20px"; // recomendado email
+        // aplicar TODOS los estilos que vienen en item.style
+        if (item.style) {
+          Object.entries(item.style).forEach(([key, value]) => {
+            ul.style[key] = value;
+          });
+        }
       });
 
       return (
-        <ul
-          style={item.style}
+        <div
           dangerouslySetInnerHTML={{
             __html: doc.body.innerHTML,
           }}
@@ -88,14 +88,36 @@ export function renderContent(item) {
     }
 
     case "module-button": {
+      let tableMargin = "0 auto";
+      if (item.content.align === "left") {
+        tableMargin = "0 auto 0 0";
+      } else if (item.content.align === "right") {
+        tableMargin = "0 0 0 auto";
+      } else if (item.content.align === "center") {
+        tableMargin = "0 auto";
+      }
       return (
-        <div
-          style={item.style}
-          dangerouslySetInnerHTML={{
-            __html: item.content.text,
+        <table
+          width={`${item.content.width}%`}
+          height={item.content.height}
+          border="0"
+          cellSpacing="0"
+          cellPadding="0"
+          style={{
+            borderCollapse: "separate",
+            borderSpacing: 0,
+            margin: tableMargin,
           }}
-        ></div>
-      )
+        >
+          <tbody>
+            <tr>
+              <td align="center" style={item.style}>
+                <span>{item.content.text}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      );
     }
 
     case "module-divider": {
@@ -191,7 +213,41 @@ export function renderContent(item) {
             />
           </div>
         </>
-      );
+      )
+
+    case "module-menu": {
+      const justifyMap = {
+        left: "flex-start",
+        center: "center",
+        right: "flex-end",
+      };
+      const justifyContent = justifyMap[item.content?.align] || "flex-start";
+      return (
+        <div  style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: justifyContent, // ← mueve todo a la derecha
+        }}>
+          <div 
+              style={{
+                display: "flex",
+                gap: item.content?.spacing || "0px",
+                ...item.style,
+              }}
+          >
+            {item.content.menu.map((menu, colIndex) => (
+                <div 
+                  key={`td-${colIndex}`} 
+                  style={{paddingLeft: '${item.content.spacing}'}}
+                >
+                  {menu.text}
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      )
+    }
 
     case "module-social": {
       const socials = item.content.social || [];
@@ -217,12 +273,15 @@ export function renderContent(item) {
 
     case "module-html": {
       return (
-        <div
-          style={item.style}
-          dangerouslySetInnerHTML={{
-            __html: item.content.html,
-          }}
-        ></div>
+        <>
+          <div
+            style={item.style}
+            dangerouslySetInnerHTML={{
+              __html: item.content.html,
+            }}
+          ></div>
+          <div className="tapa"></div>
+        </>
       );
     }
 

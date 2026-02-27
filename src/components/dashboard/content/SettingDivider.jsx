@@ -78,7 +78,7 @@ export default function SettingDivider({ content, onUpdate }) {
                             ...content,
                             style: {
                               ...content.style,
-                              borderTopWidth: val,
+                              borderTopWidth: `${val}px`,
                             },
                           });
                         }}

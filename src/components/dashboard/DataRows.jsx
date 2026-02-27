@@ -1,8 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { dataRows } from "../../data/DataRows";
+import { getDefaults } from "../../services/Services";
 
 export default function Rows({ onDragStart }) {
   const [option, setOption] = useState("empty");
+  const [defaults, setDefaults] = useState([]);
+  const [loadingDefaults, setLoadingDefaults] = useState(false);
+
+  useEffect(() => {
+    if (option === "default") {
+      loadDefaults();
+    }
+  }, [option]);
+
+  const loadDefaults = async () => {
+    try {
+      setLoadingDefaults(true);
+      const data = await getDefaults();
+      setDefaults(data);
+    } catch (error) {
+      console.error("Error cargando defaults", error);
+    } finally {
+      setLoadingDefaults(false);
+    }
+  };
 
   return (
     <>
@@ -63,8 +84,48 @@ export default function Rows({ onDragStart }) {
 
       {option === "default" && (
         <div className="p-3 border rounded">
-          <h4>Filas predeterminadas</h4>
-          <p>Aquí irán las filas configuradas por defecto.</p>
+          <div
+            style={{
+              width: "100%",
+              overflowY: "auto",
+              overflowX: 'hidden',
+            }}
+          >
+            {loadingDefaults && <div>Cargando...</div>}
+
+            {!loadingDefaults && defaults.length === 0 && (
+              <div className="text-muted">No hay plantillas predeterminadas</div>
+            )}
+
+            {defaults.map((item) => (
+              <div
+                key={item.id}
+                className="card mb-3 card-rows"
+                draggable={true}
+                onDragStart={() =>
+                  onDragStart({
+                    type: "new default",
+                    data: item.template_list, // 👈 aquí mandas el template guardado
+                  })
+                }
+              >
+                <div className="card-body">
+                  <div className="card-img">
+                    <img
+                      src={item.image} // 👈 base64 directo desde BD
+                      alt={item.name}
+                      style={{
+                        width: "100%",
+                      }}
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <label className="text-primary-lite">{item.name}</label>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </>

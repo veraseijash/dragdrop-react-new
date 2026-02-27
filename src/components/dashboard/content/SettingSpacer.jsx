@@ -33,6 +33,7 @@ export default function SettingSpacer({ content, onUpdate }) {
                           style: {
                             ...content.style,
                             height: `${val}px`,
+                            lineHeight: `${val}px`,
                           },
                         });
                       }}

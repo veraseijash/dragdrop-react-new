@@ -56,7 +56,38 @@ const styleToString = (style = {}) => {
 // Renderiza módulos internos (imagen, texto, divider, etc.)
 const renderModuleContent = (module) => {
   switch (module.type) {
-    case "module-image":
+    case "module-image": {
+      const hasLink = module.content.url && module.content.url.trim() !== "";
+
+      const imageTag = `
+        <img 
+          src="${module.content.src}" 
+          alt="${module.content.alt || ""}"
+          width="${module.content.width}"
+          border="0"
+          style="display:block;border:0;outline:none;text-decoration:none;${styleToString(module.style)}"
+        />
+      `;
+
+      return `
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+          style="${styleToString(module.preStyle)}"
+        >
+          <tr>
+            <td align="center">
+              ${
+                hasLink
+                  ? `<a href="${module.content.url}" target="_blank">${imageTag}</a>`
+                  : imageTag
+              }
+            </td>
+          </tr>
+        </table>
+      `;
+    }
+
+
+    case "module-gif":
       return `
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${styleToString(module.preStyle)}">
           <tr>
@@ -65,7 +96,7 @@ const renderModuleContent = (module) => {
                 src="${module.content.src}" 
                 alt="${module.content.alt || ""}"
                 width="${module.content.width}"
-                style="display:block;border:0;outline:none;text-decoration:none;${styleToString(module.style)}"
+                style="${styleToString(module.style)}"
               />
             </td>
           </tr>
@@ -85,23 +116,298 @@ const renderModuleContent = (module) => {
         </table>
       `;
 
-    case "module-divider":
+    case "module-menu": {
+      const { menu = [], spacing = '20px'} = module.content || {};
+      // Generar cada menu como un <td>
+      const menuHtml = menu
+        .map((item, index) => {
+
+          let href = "#";
+
+          switch (item.type) {
+            case "web":
+              href = item.feature?.href || "#";
+              break;
+
+            case "email": {
+              const mail = item.feature?.mailTo || "";
+              const subject = encodeForMailto(item.feature?.subject || "");
+              const body = encodeForMailto(item.feature?.body || "");
+
+              // mailto correcto para clientes de correo
+              href = `mailto:${mail}?subject=${subject}&body=${body}`;
+              break;
+            }
+
+            case "call":
+              href = `tel:${item.feature?.tel || ""}`;
+              break;
+
+            default:
+              href = "#";
+          }
+
+          return `
+            <td align="center" valign="middle"
+                style="${index !== 0 ? `padding-left:${spacing};` : ''}">
+              <a href="${href}"
+                ${item.target ? `target="${item.target}"` : ""}
+                style="text-decoration:none;color:inherit;display:inline-block;">
+                <span>${item.text}</span>
+              </a>
+            </td>
+          `;
+        })
+        .join("");
+       
       return `
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${styleToString(module.preStyle)}">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0"
+          style="${styleToString(module.style)}">
           <tr>
-            <td style="${styleToString(module.style)}">
-              <${module.content.type}>
-                ${module.content.text}
-              </${module.content.type}>
+            ${menuHtml}
+          </tr>
+        </table>
+      `
+    }
+
+    case "module-social": {
+      const { social = [], iconSpacing = "0px" } = module.content || {};
+      // Generar cada ícono como un <td>
+      const iconsHtml = social
+        .map((item, index) => {
+          // ❗ En email no existe :last-child confiable → lo controlamos manualmente
+          const paddingRight = index !== social.length - 1 ? iconSpacing : "0";
+
+          return `
+            <td align="center" valign="middle" style="padding-right:${paddingRight};">
+              <a href="${item.href}" target="_blank">
+                <img
+                  src="${item.src}"
+                  alt="${item.alt || ""}"
+                  title="${item.alt || ""}"
+                  width="32"
+                  style="display:block;height:auto;border:0;outline:none;text-decoration:none;"
+                />
+              </a>
+            </td>
+          `;
+        })
+        .join("");
+
+      return `
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+          style="${styleToString(module.preStyle)}">
+          <tr>
+            <td align="center" style="${styleToString(module.style)}">
+              <table clase="social-table" role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                <tr>
+                  ${iconsHtml}
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
       `;
+    }
+
+    case "module-button": {
+      let tableMargin = "0 auto";
+      if (module.content.align === "left") tableMargin = "0 auto 0 0";
+      else if (module.content.align === "right") tableMargin = "0 0 0 auto";
+
+      const widthPercent = module.content.width;
+      const heightPx = module.content.height;
+
+      const bgColor = module.style.backgroundColor || "#7747FF";
+      const textColor = module.style.color || "#FFFFFF";
+      const radius = parseInt(module.style.borderRadius || 4, 10);
+
+      // -----------------------------
+      // Generar href dinámico según type
+      // -----------------------------
+      let href = "#";
+
+      switch (module.content.type) {
+        case "web":
+          href = module.content.feature?.href || "#";
+          break;
+
+        case "email": {
+          const mail = module.content.feature?.mailTo || "";
+          const subject = encodeForMailto(module.content.feature?.subject || "");
+          const body = encodeForMailto(module.content.feature?.body || "");
+
+          href = `mailto:${mail}?subject=${subject}&body=${body}`;
+          break;
+        }
+
+        case "call":
+          href = `tel:${module.content.feature?.tel || ""}`;
+          break;
+      }
+
+      return `
+      <table
+        role="presentation"
+        width="100%"
+        border="0"
+        cellspacing="0"
+        cellpadding="0"
+        style="${styleToString(module.outerStyle)}"
+      >
+        <tr>
+          <td align="${module.content.align || "center"}">
+
+            <!--[if mso]>
+            <v:roundrect
+              xmlns:v="urn:schemas-microsoft-com:vml"
+              href="${href}"
+              style="height:${heightPx}px;v-text-anchor:middle;width:${widthPercent}%;"
+              arcsize="${radius * 2}%"
+              stroke="f"
+              fillcolor="${bgColor}"
+            >
+              <w:anchorlock/>
+              <center style="
+                color:${textColor};
+                font-family:${module.style.fontFamily || "Arial, sans-serif"};
+                font-size:${module.style.fontSize || 14}px;
+                font-weight:${module.style.fontWeight || 400};
+              ">
+                ${module.content.text}
+              </center>
+            </v:roundrect>
+            <![endif]-->
+
+            <!--[if !mso]><!-- -->
+            <a href="${href}"
+              target="${module.content.feature?.target || "_blank"}"
+              style="text-decoration:none;display:block;">
+              <table
+                role="presentation"
+                width="${widthPercent}%"
+                height="${heightPx}"
+                border="0"
+                cellspacing="0"
+                cellpadding="0"
+                style="
+                  width:${widthPercent}%;
+                  border-collapse:separate;
+                  border-spacing:0;
+                  margin:${tableMargin};
+                "
+              >
+                <tr>
+                  <td
+                    align="center"
+                    style="
+                      border-radius:${radius}px;
+                      mso-padding-alt:0;
+                      ${styleToString(module.style)}
+                    "
+                  >
+                    ${module.content.text}
+                  </td>
+                </tr>
+              </table>
+            </a>
+            <!--<![endif]-->
+
+          </td>
+        </tr>
+      </table>
+      `;
+    }
+
+
+
+
+    case "module-html":
+      return `
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+         style="${styleToString(module.preStyle)}">
+         <tr>
+          <td style="${styleToString(module.style)}">
+            ${module.content.html}
+          </td>
+         </tr>
+        </table>
+      `
+
+    case "module-spacer":
+      return `
+        <div style="${styleToString(module.style)}">${module.content.text}</div>
+        <div style="height:1px;line-height:1px;font-size:1px;">${module.content.text}</div>
+      `;
+
+    case "module-list": {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(module.content.text, "text/html");
+
+      // convertir estilos del módulo a objeto aplicable
+      const ulStyles = module.style || {};
+
+      // aplicar estilos al <ul> que ya viene en el contenido
+      doc.body.querySelectorAll("ul, ol").forEach((list) => {
+        Object.entries(ulStyles).forEach(([key, value]) => {
+          list.style[key] = value;
+        });
+
+        // MUY importante para emails (si no viene definido)
+        if (!list.style.paddingLeft) {
+          list.style.paddingLeft = "20px";
+        }
+        if (!list.style.margin) {
+          list.style.margin = "0";
+        }
+      });
+
+      const listHTML = doc.body.innerHTML;
+
+      return `
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+          <tr>
+            <td style="${styleToString(module.preStyle)}">
+              ${listHTML}
+            </td>
+          </tr>
+        </table>
+      `;
+    }
+
+    case "module-divider": {
+      const outerStyle = styleToString(module.preStyle);  // padding vive aquí
+      const lineStyle  = styleToString(module.style);     // borde vive aquí
+
+      return `
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${outerStyle}">
+          <tr>
+            <td style="padding:0;">
+
+              <!-- TABLA DE LA LÍNEA (aislada) -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="
+                    ${lineStyle}
+                    font-size:0;
+                    line-height:0;
+                  ">
+                    &nbsp;
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+        </table>
+      `;
+    }
+
+
 
     case "module-table": {
       return renderModuleTable(module);
     }
-
 
     case "module-video": {
       const preStyle = {
@@ -112,8 +418,31 @@ const renderModuleContent = (module) => {
         minWidth: "320px",
         boxSizing: "content-box"
       };
-      return `
-        <a class="video-preview" tabindex="0" href="${module.content.url}" target="_blank" title="${module.content.alt}" style="box-sizing: content-box; background-color: #5b5f66; background-image: radial-gradient(circle at center, #5b5f66, #1d1f21); display: block; text-decoration: none;">
+      const {
+        paddingTop = "0px",
+        paddingRight = "0px",
+        paddingBottom = "0px",
+        paddingLeft = "0px",
+      } = module.preStyle || {};
+      const linkStyle = styleToString({
+        boxSizing: "content-box",
+        backgroundColor: "transparent",
+        display: "block",
+        textDecoration: "none",
+        paddingTop,
+        paddingRight,
+        paddingBottom,
+        paddingLeft,
+      });
+      return `        
+        <a
+          class="video-preview"
+          tabindex="0"
+          href="${module.content.url}"
+          target="_blank"
+          title="${module.content.alt}"
+          style="${linkStyle}"
+        >
           <div style="box-sizing: content-box;">
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; ${styleToString(preStyle)}">
               <tbody>
@@ -164,19 +493,33 @@ const renderModuleContent = (module) => {
   }
 };
 
+const STRUCTURAL_MODULES = new Set([
+  "module-divider",
+  "module-table",
+  "module-video"
+]);
+
 const renderModule = (module) => {
+
+  // ⚠️ estos módulos ya generan su propia tabla raíz
+  if (STRUCTURAL_MODULES.has(module.type)) {
+    return renderModuleContent(module);
+  }
+
+  // módulos normales (texto, imagen, gif, lista…)
   return `
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
-      style="${styleToString(module.preStyle)}"
+      style="${module.type !== 'module-button' ? styleToString(module.preStyle) : ''}"
     >
       <tr>
-        <td style="${styleToString(module.style)}">
+        <td ${module.type === 'module-menu' ? `align="${module.content.align}"`: ''} style="${(module.type !== 'module-button' && module.type !== 'module-menu') ? styleToString(module.style) : ''}">
           ${renderModuleContent(module)}
         </td>
       </tr>
     </table>
   `;
 };
+
 
 
 // Renderiza columnas (TD)
@@ -257,7 +600,8 @@ export const buildEmailHtml = (pageData) => {
     <head>
       <title></title>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"><!--[if mso]>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>html,body{margin:0;padding:0;width:100%;max-width:100%;overflow-x:hidden;box-sizing:border-box}*{box-sizing:border-box!important;max-width:100%!important}table{table-layout:fixed}img{max-width:100%!important;height:auto!important;display:block}td,div,p,span{word-break:break-word}@media (max-width:700px){.social-table{display:inline-block!important}}</style><!--[if mso]>
 <xml><w:WordDocument xmlns:w="urn:schemas-microsoft-com:office:word"><w:DontUseAdvancedTypographyReadingMail/></w:WordDocument>
 <o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml>
 <![endif]--><!--[if !mso]><!-->
@@ -327,4 +671,15 @@ function renderModuleTable(module) {
     </table>
   `;
 }
+
+function encodeForMailto(text = "") {
+  return encodeURIComponent(
+    text
+      .replace(/\r?\n/g, "\r\n")   // Outlook requiere CRLF
+      .replace(/<[^>]*>/g, "")     // quitar HTML si viene del editor
+      .trim()
+  )
+  .replace(/%20/g, "%20"); // aseguramos espacios como %20 (no +)
+}
+
 

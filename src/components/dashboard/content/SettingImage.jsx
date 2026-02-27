@@ -84,7 +84,7 @@ export default function SettingImagen({ content, onUpdate }) {
                     Cambiar imagen
                   </button>
                   <div className="input-group mt-2">
-                    <span className="input-group-text" id="basic-addon1">Url</span>
+                    <span className="input-group-text" id="basic-addon1">Url de imagen</span>
                     <input 
                       type="text" 
                       className="form-control" 
@@ -115,6 +115,25 @@ export default function SettingImagen({ content, onUpdate }) {
                           content: {
                             ...content.content,
                             alt: e.target.value,
+                          },
+                        });
+                      }}
+                    />
+                  </div>
+                  <div className="mt-2">Acción</div>
+                  <div className="input-group mt-2">
+                    <span className="input-group-text" id="basic-addon1">URL</span>
+                    <input 
+                      type="text" 
+                      className="form-control" 
+                      placeholder="Coloque..."
+                      value={content?.content?.url || ""}
+                      onChange={(e) => {
+                        onUpdate({
+                          ...content,
+                          content: {
+                            ...content.content,
+                            url: e.target.value,
                           },
                         });
                       }}

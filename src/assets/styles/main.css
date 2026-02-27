@@ -375,22 +375,46 @@ p, ul {
 }
 .basic-templates-grid {
   width: 200px;
-  height: 300px;
+  height: auto;
   min-width: 200px;
   min-height: 300px;
-  cursor: pointer;
   background-color: #F6F6F6;
   padding: 20px;
-  text-align: center;
   border: 1px solid #ccc;
   border-radius: 15px;
+  position: relative;
   overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+.template-preview {
+  position: relative;
+  height: 200px;          /* altura inicial visible */
+  overflow: hidden;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  transition: height 0.45s ease;
+}
+.template-preview img {
+  width: 100%;
+  height: auto;
+  min-height: 260px;   /* más alta que el preview */
+  object-fit: cover;
 }
 .basic-templates-grid img {
   width: 100%;
   height: auto;
-  max-height: 210px;
-  object-fit: cover;
+  max-height: none;     /* ❗ importante */
+  object-fit: contain;  /* mejor para previews completos */
+}
+.basic-templates-grid:hover .template-preview {
+  height: auto;       /* se revela más imagen */
+  transition-delay: 1s; /* ⏱ espera 1 segundo */
+}
+.basic-templates-grid .btn {
+  margin-top: auto;   /* 👈 esto lo empuja al fondo SIEMPRE */
 }
 .page-stage {
   position: relative;
@@ -574,9 +598,8 @@ p, ul {
   cursor: grab;
 }
 .card-rows:hover {
-  border: 1px solid var(--tile-background-color);
-  -webkit-box-shadow: var(--tile-hover-box-shadow);
-  box-shadow: var(--tile-hover-box-shadow);
+  -webkit-box-shadow: var(--bs-box-shadow-sm);
+  box-shadow: var(--bs-box-shadow-sm) !important;
   cursor: -webkit-grab;
   cursor: grab;
 }
@@ -708,7 +731,7 @@ p, ul {
   display: flex;
   flex-direction: column;
   transition: right 0.3s ease-in-out;
-  z-index: 999;
+  z-index: 400;
 }
 .image-setting-panel {  
   position: fixed;
@@ -1138,14 +1161,176 @@ p, ul {
   min-height: 100%;
   padding: 24px 0;
 }
-.preview-wrapper iframe {
-  width: 680px;              /* o el ancho dinámico del email */
+.preview-wrapper > div:first-child {  /* o el ancho dinámico del email */
   max-width: 100%;
   min-height: 400px;
   border: none;
   background: white;
   box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  
+}
+.preview-wrapper.pc > div:first-child {
+  width: 680px;  
   height: calc(100vh - 200px);
+}
+.preview-wrapper.table > div:first-child {
+  width: 1024px;  
+  height: 768px;
+}
+.preview-wrapper.mobile > div:first-child {
+  width: 320px;  
+  height: 480px;
+}
+.tapa {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+}
+/* CONTENEDOR masonry */
+.np-gallery {
+  column-count: 4;
+  column-gap: 16px;
+  padding: 16px;
+}
+
+/* Responsive automático */
+@media (max-width: 1200px) {
+  .np-gallery { column-count: 3; }
+}
+@media (max-width: 768px) {
+  .np-gallery { column-count: 2; }
+}
+@media (max-width: 480px) {
+  .np-gallery { column-count: 1; }
+}
+
+/* ITEM */
+.np-gallery-item {
+  position: relative;
+  break-inside: avoid;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f3f3f3;
+  min-height: 120px;
+
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+/* Hover efecto */
+.np-gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,.15);
+}
+
+/* Imagen NO se deforma */
+.np-gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Overlay hover */
+.np-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  opacity: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: opacity .25s ease;
+}
+
+.np-gallery-item:hover .np-overlay {
+  opacity: 1;
+}
+
+/* Botón seleccionar */
+.np-overlay button {
+  background: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Botón eliminar */
+.np-delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  border: none;
+  background: #ff4d4f;
+  color: white;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+/* Overlay cuando elimina */
+.np-loading {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.8);
+  z-index: 4;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.actions-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  opacity: 0;              /* invisible */
+  visibility: hidden;      /* no interactuable */
+  transition: opacity .2s ease;
+}
+.actions-menu .btn-outline-primary {
+  background-color: #fff;
+  color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+.actions-menu .btn-outline-primary:hover,
+.actions-menu .btn-outline-primary:focus,
+.actions-menu .btn-outline-primary:active,
+.actions-menu .btn-outline-primary.show {
+  background-color: var(--bs-primary);
+  color: #fff;
+  border-color: var(--bs-primary);
+  box-shadow: none; /* quita el glow azul de Bootstrap */
+}
+.actions-menu .btn-outline-primary.dropdown-toggle::after {
+  display: none;   /* elimina la flecha */
+}
+.basic-templates-grid:hover .actions-menu {
+  opacity: 1;
+  visibility: visible;
+}
+.dropdown-item.color-red {
+  color: var(--danger-500);
+}
+.card-img {
+  width: 100%;
+}
+.card-img img {
+  width: 100%;
+}
+.card-rows:hover {
+  transform: scale(1.02);
+  transition: 0.2s ease;
+  cursor: grab;
 }
 
 @keyframes spin {

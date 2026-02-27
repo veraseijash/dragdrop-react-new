@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import logoSmall from "../../assets/images/logo-black.svg";
 import newTemplate from "../../assets/images/new-template.png";
 import { Link } from "react-router-dom";
-import { getTemplatesUser } from "../../services/Services";
+import { getTemplatesUser, deleteTemplate } from "../../services/Services";
+import { toast } from "react-toastify";
+import { confirmToast } from "../../components/dashboard/utilities/confirmToast"
 
 export default function Index() {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -40,6 +42,36 @@ export default function Index() {
     fetchTemplates();
   }, []);
 
+  const fetchTemplates = async () => {
+    try {
+      const data = await getTemplatesUser(userId);
+      setTemplates(data);
+    } catch (error) {
+      console.error("Error cargando plantillas:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTemplates();
+  }, []);
+
+  const handleDelete = (id) => {
+    confirmToast({
+      message: "¿Seguro que deseas eliminar esta plantilla?",
+      onConfirm: async () => {
+        try {
+          await deleteTemplate(id);
+
+          toast.success("Plantilla eliminada");
+
+          fetchTemplates(); // 🔁 recargar lista
+        } catch (error) {
+          toast.error("Error al eliminar");
+        }
+      },
+    });
+  };
+
   return (
   <div className="editor-root">
     <div className="editor-conteniner">
@@ -69,8 +101,8 @@ export default function Index() {
           <div className="mb-4">
             <h4>Inicio rápido con plantillas básicas</h4>
             <div className="files-main-content">
-              <div className="basic-templates-grid d-flex flex-column justify-content-between">
-                  <div>
+              <div className="basic-templates-grid d-flex flex-column">
+                  <div className="template-preview">
                     <img src={newTemplate} alt="template" />
                   </div>            
                   <Link to="/editor/0" className="btn btn-outline-primary">
@@ -86,9 +118,30 @@ export default function Index() {
               {templates.map((template) => (
                 <div
                   key={template.id}
-                  className="basic-templates-grid d-flex flex-column justify-content-between"
+                  className="basic-templates-grid d-flex flex-column"
                 >
-                  <div>
+                  <div className="actions-menu">
+                    <div className="btn-group">
+                      <button type="button" className="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </button>
+                      <ul className="dropdown-menu dropdown-menu-end">
+                        <li><button className="dropdown-item" type="button"><i class="bi bi-send"></i> Enviar prueba</button></li>
+                        <li><button className="dropdown-item" type="button"><i class="bi bi-upload"></i> Exportar</button></li>
+                        <li><hr className="dropdown-divider"/></li>
+                        <li>
+                          <button
+                            className="dropdown-item color-red"
+                            type="button"
+                            onClick={() => handleDelete(template.id)}
+                          >
+                            <i className="bi bi-trash"></i> Eliminar
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="template-preview">
                     <img
                       src={
                         template.image && template.image.trim() !== ""

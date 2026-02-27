@@ -10,6 +10,7 @@ import socialIcon from "../assets/images/social.svg"
 import videoIcon from "../assets/images/video.svg"
 import htmlIcon from "../assets/images/html.svg"
 import gifIcon from "../assets/images/gif.svg"
+import menuIcon from "../assets/images/menu.svg"
 
 export const dataContent = [
   {
@@ -26,6 +27,11 @@ export const dataContent = [
     icon: listIcon,
     title: "Lista",
     type: "module-list",
+  },
+  {
+    icon: menuIcon,
+    title: "Menú",
+    type: "module-menu",
   },
   {
     icon: imageIcon,

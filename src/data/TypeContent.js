@@ -25,6 +25,7 @@ export const TYPE_CONTENT = {
       alt: `Tu imagen`,
       name: '',
       width: '50%',
+      url: '',
     },
   },
   
@@ -159,6 +160,74 @@ export const TYPE_CONTENT = {
     },
   },
 
+  "module-menu": {
+    type: "module-menu",
+    label: "Menú",
+    icon: "menu",
+    outerStyle: {},
+    preStyle: {
+      textAlign: 'center',
+      paddingTop: '0px',
+      paddingRight: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      width: '100%',
+      backgroundColor: 'transparent',
+    },
+    style: {
+      fontFamily: `Arial, "Helvetica Neue", Helvetica, sans-serif`,
+      fontSize: '16px',
+      fontWeight: '400',
+      listStyle: 'none',
+      paddingTop: '0px',
+      paddingRight: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      backgroundColor: 'transparent',
+      backgroundImage: 'none',
+      backgroundPosition: 'left top',
+      backgroundRepeat: 'no-repeat',
+      borderWidth: '0px',
+      borderStyle: 'solid',
+      borderColor: 'transparent',
+      borderRadius: '0px',
+      lineHeight: '2',
+      letterSpacing: '0',
+    },
+    content: {
+      align: 'right',
+      spacing: '20px',
+      menu: [
+        {
+          text: 'menú web',
+          type: 'web',
+          target: '_blank',
+          feature: {
+            href: '#',
+          },
+        },
+        {
+          text: 'menú email',
+          type: 'email',
+          target: '_blank',
+          feature: {
+            mailTo: '',
+            subject: '',
+            body: ''
+          }
+        },
+        {
+          text: 'menú call',
+          type: 'call',
+          target: '_blank',
+          feature: {
+            tel: ''
+          }
+        }
+      ]
+    }
+  },
+
   "module-list": {
     type: "module-list",
     label: "Lista",
@@ -184,14 +253,17 @@ export const TYPE_CONTENT = {
       lineHeight: '120%',
       letterSpacing: '1px',
       fontWeight: '400',
-      padding: '0px',
+      paddingTop: '0px',
+      paddingRight: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '20px',
       width: '100%',
       listStyleType: "disc",
       fontFamily: `Arial, "Helvetica Neue", Helvetica, sans-serif`,
     },
     content: {
       type: 'ul',
-      text: '<li>Tu primer elemento de la lista</li>',
+      text: '<ul><li>Tu primer elemento de la lista</li></ul>',
     }
   },
 
@@ -209,27 +281,20 @@ export const TYPE_CONTENT = {
     },
     preStyle: {
       fontFamily: 'inherit',
-      fontWeight: '400',
+      color: '#FFFFFF',
+      lineHeight: '2',
+      letterSpacing: 'normal',
+      width: '100%',
+      direction: 'ltr',
+      display: 'inline-bloc',
+      textAlign: 'center',
+    },
+    style: {      
       backgroundColor: '#7747FF',
       borderRadius: '4px',
       borderWidth: '0px',
       borderStyle: 'solid',
       borderColor: 'transparent',      
-      color: '#FFFFFF',
-      lineHeight: '2',
-      letterSpacing: 'normal',
-      paddingTop: '5px',
-      paddingRight: '20px',
-      paddingBottom: '5px',
-      paddingLeft: '20px',
-      width: 'auto',
-      maxWidth: '100%',
-      direction: 'ltr',
-      display: 'inline-bloc',
-      textAlign: 'center',
-      margin: '0 auto',
-    },
-    style: {
       fontFamily: 'inherit',
       fontWeight: '400',
       color: '#FFFFFF',
@@ -237,11 +302,14 @@ export const TYPE_CONTENT = {
       letterSpacing: '0',
       direction: 'ltr',
       textAlign: 'center',
-      marginBottom: '0',
+
     },
     content: {
       text: 'Botón',
       type: 'web',
+      height: 50,
+      width: 50,
+      align: 'center',
       feature: {
         href: '#',
         target: '_blank'
@@ -348,9 +416,10 @@ export const TYPE_CONTENT = {
       borderTopStyle: 'solid',
       borderTopColor: '#DDDDDD',
       borderTopWidth: '2px',
-      lineHeight: '0',
       width: '100%',
       margin: '0 auto',
+      fontSize: '1px',
+      lineHeight: '1px',
     },
     content: {
       text: '&nbsp;',
@@ -368,6 +437,8 @@ export const TYPE_CONTENT = {
     style: {
       display: 'block',
       height: '60px',
+      lineHeight: '60px',
+      fontSize: '1px',
     },
     content: {
       text: '&nbsp;',

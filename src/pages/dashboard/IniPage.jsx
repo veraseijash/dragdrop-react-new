@@ -12,10 +12,9 @@ import logoSmall from "../../assets/images/logo-black.svg";
 import ContentSetting from "../../components/dashboard/ContentSetting";
 import { createTemplate, updateTemplate, getTemplate, generateImage } from "../../services/Services";
 import { buildEmailHtml } from "../../data/EmailBuilder";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Tippy from '@tippyjs/react';
 import PreviewModal from "../../components/dashboard/utilities/PreviewModal";
+import { toast } from "react-toastify";
 
 export default function IniPage() {
   const [activeTab, setActiveTab] = useState("content");
@@ -90,6 +89,18 @@ export default function IniPage() {
       } else {
         newRows.splice(targetIndex + 1, 0, newRow);
       }
+    } else if (dragData.type === "new default") {
+      dragData.data.rows.map((row) => {
+        const newRow = {
+          ...structuredClone(row),
+          id: crypto.randomUUID(),
+        };
+        if (side === "top") {
+          newRows.splice(targetIndex, 0, newRow);
+        } else {
+          newRows.splice(targetIndex + 1, 0, newRow);
+        }
+      })
     }
 
     // ==============================
@@ -462,9 +473,11 @@ export default function IniPage() {
 
   useEffect(() => {
     const fetchPageData = async () => {
+      setIsLoading(true);
       if (id === "0") {
         // Nuevo template
         setPageData(defaultPageTemplate);
+        setIsLoading(false);
       } else {
         // Traer template existente
         try {
@@ -481,6 +494,8 @@ export default function IniPage() {
         } catch (error) {
           console.error("Error cargando template:", error);
           setPageData(defaultPageTemplate); // fallback
+        } finally {
+          setIsLoading(false);
         }
       }
     };
@@ -703,16 +718,6 @@ export default function IniPage() {
         onChangeContent={handleUpdateContent}
         onDeleteContent={handleOnDeleteContent}
         onCloneContent={handleOnCloneContent}
-      />
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        pauseOnHover
-        draggable
-        theme="light"
       />
       <PreviewModal
         open={openPreviewModal}

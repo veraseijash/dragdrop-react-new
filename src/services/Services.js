@@ -82,3 +82,13 @@ export const getTemplate = async (id) => {
   const { data } = await api.get(`templates/${id}`);
   return data;
 }
+
+export const deleteTemplate = async (id) => {
+  const { data } = await api.delete(`templates/${id}`);
+  return data;
+}
+
+export const getDefaults = async () => {
+  const { data } = await api.get(`defaults/`);
+  return data;
+}
