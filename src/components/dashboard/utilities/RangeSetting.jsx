@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function RangeSetting({
   label,
@@ -12,10 +12,15 @@ export default function RangeSetting({
 }) {
   const [internalValue, setInternalValue] = useState(value);
 
+  // 👇 sincroniza cuando cambia el value del padre
+  useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
+
   const handleChange = (e) => {
-    const newValue = e.target.value;
+    const newValue = Number(e.target.value);
     setInternalValue(newValue);
-    onChange && onChange(newValue); // retorna valor al padre
+    onChange && onChange(newValue);
   };
 
   return (

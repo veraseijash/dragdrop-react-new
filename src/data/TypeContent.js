@@ -19,7 +19,9 @@ export const TYPE_CONTENT = {
       borderColor: 'transparent',
       borderRadius: '0px',
     },
-    style: {},
+    style: {
+      display: 'inline-block',
+    },
     content: {
       src: '',
       alt: `Tu imagen`,
@@ -197,6 +199,7 @@ export const TYPE_CONTENT = {
     content: {
       align: 'right',
       spacing: '20px',
+      layout: 'row',
       menu: [
         {
           text: 'menú web',
@@ -465,6 +468,7 @@ export const TYPE_CONTENT = {
     content: {
       iconSpacing: '2.5px',
       type: 'Colors',
+      size: '32px',
       social: [
         {
           src: "https://erxivmd.stripocdn.email/content/assets/img/social-icons/logo-colored/facebook-logo-colored.png",

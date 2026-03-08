@@ -558,6 +558,31 @@ export default function SettingMenu({ content, onUpdate }) {
                 />
                 <div className="content-setting-dos">
                   <div className="content-col">
+                    Disposición
+                  </div>
+                  <div className="content-col">
+                    <select
+                      className="form-select"
+                      value={content?.content?.layout}
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        onUpdate({
+                          ...content,
+                          content: {
+                            ...content.content,
+                            layout: value,
+                          },
+                        });
+                      }}
+                    >
+                      <option value="row">Horizontal</option>
+                      <option value="col">Vertical</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="content-setting-dos">
+                  <div className="content-col">
                     Espacio entre menú
                   </div>
                   <div className="content-col" style={{width: "120px"}}>
@@ -576,6 +601,9 @@ export default function SettingMenu({ content, onUpdate }) {
                         });
                       }}
                     >
+                      <option value="0">0 px</option>
+                      <option value="10">10 px</option>
+                      <option value="15">15 px</option>
                       <option value="20">20 px</option>
                       <option value="25">25 px</option>
                       <option value="30">30 px</option>

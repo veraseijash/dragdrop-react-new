@@ -92,3 +92,8 @@ export const getDefaults = async () => {
   const { data } = await api.get(`defaults/`);
   return data;
 }
+
+export const sendMail = async (body) => {
+  const { data } = await api.post(`mail/send/`, body);
+  return data;
+}

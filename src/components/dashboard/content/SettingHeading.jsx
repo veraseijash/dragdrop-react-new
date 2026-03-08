@@ -306,6 +306,7 @@ export default function SettingButton({ content, onUpdate }) {
                 <AlignCenterSetting
                   value={content?.style?.textAlign}
                   name={`align-1`}
+                  showJustify = {true}
                   onChange={(val) => {
                     onUpdate({
                       ...content,

@@ -307,6 +307,22 @@ p, ul {
   font-size: 65px;
   color: #c2bdbd;
 }
+.loading-item-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.50);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
+}
+.loading-item-modal > .spinner-container > .ico {
+  font-size: 65px;
+  color: #c2bdbd;
+}
 .editor-header {
   flex: 0 0 auto;
   color: var(--black);
@@ -555,14 +571,8 @@ p, ul {
 }
 .sidebar-component {
   position: relative;
-  -webkit-transition: all .15s;
-  transition: all .15s;
-  display: -ms-flexbox;
-  display: flex;
   width: var(--sidebar-width);
   height: 100%;
-  -ms-flex-direction: column;
-  flex-direction: column;
   background: var(--gray-75);
   color: var(--widget-label-color);
   text-align: left;
@@ -570,6 +580,19 @@ p, ul {
   box-sizing: border-box;
   font-size: var(--tmp-font-size-xs);
   font-family: var(--global-font-family);
+}
+.row-config-body {  
+  position: relative;
+  -webkit-transition: all .15s;
+  transition: all .15s;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: calc(100vh - 206px);
+  vertical-align: top;
+  overflow-y: auto;
+  min-height: 0;
 }
 .editor-footer {
   width: 100%;
@@ -1332,6 +1355,41 @@ p, ul {
   transition: 0.2s ease;
   cursor: grab;
 }
+.export-style {
+  width: 280px;
+
+}
+.export-style a {
+  text-decoration: none;
+  padding: 10px;
+  cursor: pointer;
+}
+.export-style a:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+.export-style a .avatar {
+  font-size: 2em;
+  color: var(--bd-primary);
+}
+.msg-txt .name {
+  display: block;
+  color: var(--bd-primary);
+  font-weight: 600;
+}
+.msg-txt .msg-short {
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  height: 63px;
+  line-height: 20px;
+  color: #8b97b2;
+  display: -webkit-box;
+}
+
+table{table-layout:fixed}
+img{max-width:100%!important;height:auto!important;display:block}
+td,div,p,span{word-break:break-word}
+h1,h2,h3,h4,h5,h6,p{margin:0;padding:0;}
+h1{font-size: 32px}h2{font-size: 24px}h3{font-size: 18.72px}h4{font-size: 16px}h5{font-size: 13.28px}h6{font-size: 10.72px}
 
 @keyframes spin {
   to {

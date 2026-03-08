@@ -9,12 +9,12 @@ import ColorSetting from "../utilities/ColorSetting";
 export default function SettingImagen({ content, onUpdate }) {
   const [openImageModal, setOpenImageModal] = useState(false);
 
-  const widthValue = content.style?.width;
+  const widthValue = content?.content?.width;
   const width =
     typeof widthValue === "string" && widthValue.endsWith("%")
       ? parseInt(widthValue, 10)
       : 50;
-
+console.log('width: ', width)
   const handleWidthChange = (newValue) => {
     onUpdate({
       ...content,
@@ -156,7 +156,7 @@ export default function SettingImagen({ content, onUpdate }) {
                 <RangeSetting
                   id="imageWidth"
                   label="Ancho"
-                  min={20}
+                  min={10}
                   max={100}
                   step={5}
                   value={width}

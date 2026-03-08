@@ -3,6 +3,7 @@ import gridHorizontal from "../../../assets/images/grid-horizontal.svg";
 import { useMemo, useState  } from "react";
 import CenterSetting from "../utilities/centerSetting";
 import PaddingSetting from "../utilities/PaddingSetting";
+import NumberStepper from "../utilities/NumberStepper";
 
 export default function SettingSocial({ content, onUpdate }) {
   const [dragIndex, setDragIndex] = useState(null);
@@ -101,6 +102,10 @@ const handleDragEnd = () => {
   setDragIndex(null);
   setDragOverIndex(null);
 };
+const sizeNumber =
+  typeof content?.content?.size === "string"
+    ? parseInt(content.content.size, 10)
+    : content.content?.size || 32;
 
 const iconSpacing =
   typeof content?.content?.iconSpacing === "string"
@@ -279,7 +284,27 @@ const iconSpacing =
               </button>
             </h2>
             <div id="collapseThree" className="accordion-collapse collapse show">
-              <div className="accordion-body p-0">                
+              <div className="accordion-body p-0">
+                <div className="content-setting-dos border-bottom-0">
+                  <div className="content-col">
+                    Tamaño de los iconos
+                  </div>
+                  <div className="content-col">
+                    <NumberStepper
+                      value={sizeNumber}
+                      step={5}
+                      min={10}
+                      max={1000}
+                      onChange={(value) => onUpdate({
+                          ...content,
+                          content: {
+                            ...content.content,
+                            size: `${value || 32}px`,
+                          },
+                        })}
+                    />
+                  </div>
+                </div>             
                 <div className="content-setting-dos border-bottom-0">
                   <div className="content-col">
                     Espacio entre logo

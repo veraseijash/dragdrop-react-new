@@ -64,7 +64,7 @@ export default function AlignSetting({
               />
               <label
                 className="btn btn-outline-primary"
-                htmlFor={`${name}-center`}
+                htmlFor={`${name}-justify`}
               >
                 <span className="ico ico-paragraph-justify"/>
               </label>

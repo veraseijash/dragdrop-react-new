@@ -58,14 +58,14 @@ const renderModuleContent = (module) => {
   switch (module.type) {
     case "module-image": {
       const hasLink = module.content.url && module.content.url.trim() !== "";
-
+      const align =  module.preStyle?.textAlign || "left";
       const imageTag = `
         <img 
           src="${module.content.src}" 
           alt="${module.content.alt || ""}"
-          width="${module.content.width}"
+          width="100%"
           border="0"
-          style="display:block;border:0;outline:none;text-decoration:none;${styleToString(module.style)}"
+          style="display:block;border:0;outline:none;text-decoration:none;"
         />
       `;
 
@@ -74,7 +74,7 @@ const renderModuleContent = (module) => {
           style="${styleToString(module.preStyle)}"
         >
           <tr>
-            <td align="center">
+            <td valign="top" align="${align}">
               ${
                 hasLink
                   ? `<a href="${module.content.url}" target="_blank">${imageTag}</a>`
@@ -91,7 +91,7 @@ const renderModuleContent = (module) => {
       return `
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${styleToString(module.preStyle)}">
           <tr>
-            <td align="center">
+            <td valign="top" align="center">
               <img 
                 src="${module.content.src}" 
                 alt="${module.content.alt || ""}"
@@ -103,89 +103,132 @@ const renderModuleContent = (module) => {
         </table>
       `;
 
-    case "module-heading":
+    case "module-heading": {
+      const Tag = module.content.type || "h2";
+
+      const { textAlign, FontFamily, ...restStyle } = module.style || {};
+      const align = textAlign || "left";
+
+      if (FontFamily) {
+        restStyle.fontFamily = FontFamily;
+      }
+
+      const cleanText = flattenParagraphsForHeading(module.content.text);
+
+      const headingReset = `
+        margin:0;
+        padding:0;
+        mso-line-height-rule:exactly;
+        line-height:${restStyle.lineHeight || "120%"};
+      `;
+
       return `
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${styleToString(module.preStyle)}">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
+          style="${styleToString(module.preStyle)}"
+        >
           <tr>
-            <td style="${styleToString(module.style)}">
-              <${module.content.type}>
-                ${module.content.text}
-              </${module.content.type}>
+            <td valign="top" align="${align}" style="${styleToString(restStyle)}">
+              <${Tag} style="${headingReset}">
+                ${cleanText}
+              </${Tag}>
             </td>
           </tr>
         </table>
       `;
+    }
 
     case "module-menu": {
-      const { menu = [], spacing = '20px'} = module.content || {};
-      // Generar cada menu como un <td>
-      const menuHtml = menu
-        .map((item, index) => {
+      const {
+        menu = [],
+        spacing = "20px",
+        layout = "row",
+        align = "center"
+      } = module.content || {};
 
-          let href = "#";
+      const itemsHtml = menu.map((item, index) => {
 
-          switch (item.type) {
-            case "web":
-              href = item.feature?.href || "#";
-              break;
+        let href = "#";
 
-            case "email": {
-              const mail = item.feature?.mailTo || "";
-              const subject = encodeForMailto(item.feature?.subject || "");
-              const body = encodeForMailto(item.feature?.body || "");
+        switch (item.type) {
+          case "web":
+            href = item.feature?.href || "#";
+            break;
 
-              // mailto correcto para clientes de correo
-              href = `mailto:${mail}?subject=${subject}&body=${body}`;
-              break;
-            }
+          case "email": {
+            const mail = item.feature?.mailTo || "";
+            const subject = encodeForMailto(item.feature?.subject || "");
+            const body = encodeForMailto(item.feature?.body || "");
 
-            case "call":
-              href = `tel:${item.feature?.tel || ""}`;
-              break;
-
-            default:
-              href = "#";
+            href = `mailto:${mail}?subject=${subject}&body=${body}`;
+            break;
           }
 
+          case "call":
+            href = `tel:${item.feature?.tel || ""}`;
+            break;
+
+          default:
+            href = "#";
+        }
+
+        const linkHtml = `
+          <a href="${href}"
+            ${item.target ? `target="${item.target}"` : ""}
+            style="text-decoration:none;color:inherit;display:inline-block;">
+            <span>${item.text}</span>
+          </a>
+        `;
+
+        // HORIZONTAL
+        if (layout === "row") {
           return `
-            <td align="center" valign="middle"
-                style="${index !== 0 ? `padding-left:${spacing};` : ''}">
-              <a href="${href}"
-                ${item.target ? `target="${item.target}"` : ""}
-                style="text-decoration:none;color:inherit;display:inline-block;">
-                <span>${item.text}</span>
-              </a>
+            <td valign="middle" align="center"
+                style="${index !== 0 ? `padding-left:${spacing};` : ""}">
+              ${linkHtml}
             </td>
           `;
-        })
-        .join("");
-       
+        }
+
+        // VERTICAL
+        return `
+          <tr>
+            <td valign="middle" align="${align}"
+                style="${index !== 0 ? `padding-top:${spacing};` : ""}">
+              ${linkHtml}
+            </td>
+          </tr>
+        `;
+      });
+
+      const menuHtml =
+        layout === "row"
+          ? `<tr>${itemsHtml.join("")}</tr>`
+          : itemsHtml.join("");
+
       return `
         <table role="presentation" cellspacing="0" cellpadding="0" border="0"
           style="${styleToString(module.style)}">
-          <tr>
-            ${menuHtml}
-          </tr>
+          ${menuHtml}
         </table>
-      `
+      `;
     }
 
     case "module-social": {
-      const { social = [], iconSpacing = "0px" } = module.content || {};
+      const { social = [], iconSpacing = "0px", size = "32px" } = module.content || {};
       // Generar cada ícono como un <td>
       const iconsHtml = social
-        .map((item, index) => {
+        .map((item) => {
           // ❗ En email no existe :last-child confiable → lo controlamos manualmente
-          const paddingRight = index !== social.length - 1 ? iconSpacing : "0";
+          const paddingRight = iconSpacing;
 
           return `
-            <td align="center" valign="middle" style="padding-right:${paddingRight};">
+            <td valign="top" align="center" valign="middle" style="padding-right:${paddingRight};padding-left:${paddingRight}">
               <a href="${item.href}" target="_blank">
                 <img
                   src="${item.src}"
                   alt="${item.alt || ""}"
                   title="${item.alt || ""}"
-                  width="32"
+                  width="${size}"
                   style="display:block;height:auto;border:0;outline:none;text-decoration:none;"
                 />
               </a>
@@ -198,7 +241,7 @@ const renderModuleContent = (module) => {
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
           style="${styleToString(module.preStyle)}">
           <tr>
-            <td align="center" style="${styleToString(module.style)}">
+            <td valign="top" align="center" style="${styleToString(module.style)}">
               <table clase="social-table" role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
                 <tr>
                   ${iconsHtml}
@@ -256,7 +299,7 @@ const renderModuleContent = (module) => {
         style="${styleToString(module.outerStyle)}"
       >
         <tr>
-          <td align="${module.content.align || "center"}">
+          <td valign="top" align="${module.content.align || "center"}">
 
             <!--[if mso]>
             <v:roundrect
@@ -327,7 +370,7 @@ const renderModuleContent = (module) => {
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
          style="${styleToString(module.preStyle)}">
          <tr>
-          <td style="${styleToString(module.style)}">
+          <td valign="top" style="${styleToString(module.style)}">
             ${module.content.html}
           </td>
          </tr>
@@ -367,7 +410,7 @@ const renderModuleContent = (module) => {
       return `
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
           <tr>
-            <td style="${styleToString(module.preStyle)}">
+            <td valign="top" style="${styleToString(module.preStyle)}">
               ${listHTML}
             </td>
           </tr>
@@ -382,12 +425,12 @@ const renderModuleContent = (module) => {
       return `
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${outerStyle}">
           <tr>
-            <td style="padding:0;">
+            <td valign="top" style="padding:0;">
 
               <!-- TABLA DE LA LÍNEA (aislada) -->
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="
+                  <td valign="top" style="
                     ${lineStyle}
                     font-size:0;
                     line-height:0;
@@ -402,8 +445,6 @@ const renderModuleContent = (module) => {
         </table>
       `;
     }
-
-
 
     case "module-table": {
       return renderModuleTable(module);
@@ -447,12 +488,12 @@ const renderModuleContent = (module) => {
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; ${styleToString(preStyle)}">
               <tbody>
                 <tr style="box-sizing: content-box;">
-                  <td width="25%" style="box-sizing: content-box;">
+                  <td valign="top" width="25%" style="box-sizing: content-box;">
                     <img src="https://res.cloudinary.com/dpkpqgxqd/image/upload/v1770994307/dai2eqbjbpqippqymr5j.gif"
                       width="100%" border="0" alt="" style="display: block; box-sizing: content-box; height: auto; opacity: 0; visibility: hidden;"
                       height="auto">
                   </td>
-                  <td width="50%" align="center" valign="middle" style="box-sizing: content-box; vertical-align: middle;">
+                  <td valign="top" width="50%" align="center" valign="middle" style="box-sizing: content-box; vertical-align: middle;">
                     <img 
                       src="${module.content.iconColor === 'claro' ? 'https://res.cloudinary.com/dpkpqgxqd/image/upload/v1770995381/ycvz8zquag144smbiytp.png' : 'https://res.cloudinary.com/dpkpqgxqd/image/upload/v1741553788/xyjwzg0988o0bkjjavjg.png'}" 
                       width="${module.content.iconSize.replace('px', '')}"
@@ -461,7 +502,7 @@ const renderModuleContent = (module) => {
                       style="display: block; height: auto; box-sizing: content-box;"
                     >
                   </td>
-                  <td width="25%" style="box-sizing: content-box;">&nbsp;</td>
+                  <td valign="top" width="25%" style="box-sizing: content-box;">&nbsp;</td>
                 </tr>
               </tbody>
             </table>
@@ -509,10 +550,10 @@ const renderModule = (module) => {
   // módulos normales (texto, imagen, gif, lista…)
   return `
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
-      style="${module.type !== 'module-button' ? styleToString(module.preStyle) : ''}"
+      style="${module.type !== 'module-button' && module.type !== 'module-heading' ? styleToString(module.preStyle) : ''}"
     >
       <tr>
-        <td ${module.type === 'module-menu' ? `align="${module.content.align}"`: ''} style="${(module.type !== 'module-button' && module.type !== 'module-menu') ? styleToString(module.style) : ''}">
+        <td valign="top" ${module.type === 'module-menu' ? `align="${module.content.align}"`: ''} style="${(module.type !== 'module-button' && module.type !== 'module-menu') ? styleToString(module.style) : ''}">
           ${renderModuleContent(module)}
         </td>
       </tr>
@@ -526,12 +567,20 @@ const renderModule = (module) => {
 const renderCols = (cols = []) => {
   return cols
     .map(col => {
+      const { align, valign } = mapFlexToTable(col.style);
+
+      const safeStyle = stripUnsupportedEmailStyles(col.style);
+
       const contentHtml = col.content
-        .map(renderModule) // ← muchos módulos OK
+        .map(renderModule)
         .join("");
 
       return `
-        <td valign="top" style="${styleToString(col.style)}">
+        <td
+          align="${align}"
+          valign="${valign}"
+          style="${styleToString(safeStyle)}"
+        >
           ${contentHtml}
         </td>
       `;
@@ -555,7 +604,7 @@ const renderRows = (rows = [], styleBody) => {
           style="${styleToString(styleBody)}"
         >
           <tr>
-            <td align="center">
+            <td valign="top" align="center">
               <table role="presentation"
                 width="100%"
                 cellspacing="0"
@@ -565,7 +614,7 @@ const renderRows = (rows = [], styleBody) => {
                 style="${styleToString(row.preStyle)}"
               >
                 <tr>
-                  <td align="center">
+                  <td valign="top" align="center">
                     <!-- ROW CONTENT (fixed or styled width) -->
                     <table role="presentation"
                       width="100%"
@@ -601,7 +650,7 @@ export const buildEmailHtml = (pageData) => {
       <title></title>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <style>html,body{margin:0;padding:0;width:100%;max-width:100%;overflow-x:hidden;box-sizing:border-box}*{box-sizing:border-box!important;max-width:100%!important}table{table-layout:fixed}img{max-width:100%!important;height:auto!important;display:block}td,div,p,span{word-break:break-word}@media (max-width:700px){.social-table{display:inline-block!important}}</style><!--[if mso]>
+      <style>html,body{margin:0;padding:0;width:100%;max-width:100%;overflow-x:hidden;box-sizing:border-box}*{box-sizing:border-box!important;max-width:100%;}table{table-layout:fixed}img{max-width:100%!important;height:auto!important;display:block}td,div,p,span{word-break:break-word}h1,h2,h3,h4,h5,h6,p{margin:0;padding:0;}h1{font-size: 32px}h2{font-size: 24px}h3{font-size: 18.72px}h4{font-size: 16px}h5{font-size: 13.28px}h6{font-size: 10.72px}@media (max-width:700px){.social-table{display:inline-block!important}}</style><!--[if mso]>
 <xml><w:WordDocument xmlns:w="urn:schemas-microsoft-com:office:word"><w:DontUseAdvancedTypographyReadingMail/></w:WordDocument>
 <o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml>
 <![endif]--><!--[if !mso]><!-->
@@ -649,7 +698,7 @@ function renderModuleTable(module) {
             `<tr>${row.cols
               .map(
                 (col) =>
-                  `<td style="${styleToString(module.content.colStyle)}">${
+                  `<td valign="top" style="${styleToString(module.content.colStyle)}">${
                     col || "&nbsp;"
                   }</td>`
               )
@@ -661,7 +710,7 @@ function renderModuleTable(module) {
   return `
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
-        <td style="${styleToString(module.outerStyle)}">
+        <td valign="top" style="${styleToString(module.outerStyle)}">
           <table style="${styleToString(module.style)}">
             ${headHtml}
             ${bodyHtml}
@@ -682,4 +731,59 @@ function encodeForMailto(text = "") {
   .replace(/%20/g, "%20"); // aseguramos espacios como %20 (no +)
 }
 
+function flattenParagraphsForHeading(html = "") {
+  return html
+    // quitar saltos raros
+    .replace(/\n/g, "")
 
+    // convertir </p><p> en <br>
+    .replace(/<\/p>\s*<p>/gi, "<br>")
+
+    // eliminar <p> inicial
+    .replace(/^<p>/i, "")
+
+    // eliminar </p> final
+    .replace(/<\/p>$/i, "")
+
+    // limpiar <p> sueltos restantes
+    .replace(/<\/?p[^>]*>/gi, "");
+}
+
+const mapFlexToTable = (style = {}) => {
+  let align = "left";
+  let valign = "top";
+
+  switch (style.justifyContent) {
+    case "center":
+      align = "center";
+      valign = "middle";
+      break;
+
+    case "flex-end":
+      align = "right";
+      valign = "bottom";
+      break;
+
+    case "flex-start":
+    default:
+      align = "left";
+      valign = "top";
+      break;
+  }
+
+  return { align, valign };
+};
+
+const stripUnsupportedEmailStyles = (style = {}) => {
+  const {
+    justifyContent,
+    alignItems,
+    display,
+    gap,
+    flex,
+    flexDirection,
+    ...safe
+  } = style;
+
+  return safe;
+};

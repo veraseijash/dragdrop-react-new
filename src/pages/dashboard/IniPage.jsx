@@ -15,6 +15,7 @@ import { buildEmailHtml } from "../../data/EmailBuilder";
 import Tippy from '@tippyjs/react';
 import PreviewModal from "../../components/dashboard/utilities/PreviewModal";
 import { toast } from "react-toastify";
+import ModalMailing from "../../components/dashboard/utilities/ModalMailing";
 
 export default function IniPage() {
   const [activeTab, setActiveTab] = useState("content");
@@ -26,6 +27,8 @@ export default function IniPage() {
   const [templateName, setTemplateName] = useState("");
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [openMailing, setOpenMailing] = useState(false);
 
   useEffect(() => {
   if (pageData?.name) {
@@ -90,17 +93,19 @@ export default function IniPage() {
         newRows.splice(targetIndex + 1, 0, newRow);
       }
     } else if (dragData.type === "new default") {
-      dragData.data.rows.map((row) => {
+      console.log('dragData.data.rows: ', dragData.data.rows)
+      dragData.data.rows.forEach((row, i) => {
         const newRow = {
           ...structuredClone(row),
           id: crypto.randomUUID(),
         };
+
         if (side === "top") {
-          newRows.splice(targetIndex, 0, newRow);
+          newRows.splice(targetIndex + i, 0, newRow);
         } else {
-          newRows.splice(targetIndex + 1, 0, newRow);
+          newRows.splice(targetIndex + 1 + i, 0, newRow);
         }
-      })
+      });
     }
 
     // ==============================
@@ -601,7 +606,36 @@ export default function IniPage() {
                 <i className="bi bi-file-earmark-code fs-2"></i>
               </button>
             </Tippy>
-            <button type="button" className="btn btn-outline-secondary">Exportar</button>
+            <div className="btn-group">
+              <button type="button" className="btn btn-outline-primary" data-bs-toggle="dropdown" aria-expanded="false" style={{borderTopRightRadius: '0.375rem', borderBottomRightRadius: '0.375rem'}}>Exportar</button>
+              <ul className="dropdown-menu dropdown-menu-end export-style">
+                <li>
+                  <a
+                    className="d-flex gap-2"
+                    onClick={() => setOpenMailing(true)}
+                  >
+                      <div className="avatar">
+                        <i className="bi bi-send"></i>
+                      </div>
+                      <div className="msg-txt">
+                          <span className="name">Probar mailing</span>
+                          <span className="msg-short">Puede probar la visualización de su correo ingresando direcciones de correo separados por coma.</span>
+                      </div>
+                  </a>
+                </li>
+                <li>
+                    <a className="d-flex gap-2">
+                        <div className="avatar">
+                          <span className="ico ico-file-zip" />
+                        </div>
+                        <div className="msg-txt">
+                            <span className="name">Descargar</span>
+                            <span className="msg-short">Obtenga un archivo zip con el HTML.</span>
+                        </div>
+                    </a>
+                </li>
+              </ul>
+            </div>
             <div className="dropdown">
               <button 
                 type="button" 
@@ -723,6 +757,11 @@ export default function IniPage() {
         open={openPreviewModal}
         onClose={() => setOpenPreviewModal(false)}
         pageData={pageData}
+      />
+      <ModalMailing
+        open={openMailing}
+        onClose={() => setOpenMailing(false)}
+        templateHtml={buildEmailHtml(pageData)}
       />
     </div>
     

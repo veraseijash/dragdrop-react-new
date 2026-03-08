@@ -125,6 +125,22 @@ export default function ColsSetting({
     });
   };
 
+  const sameWidth = () => {
+    setCols((prevCols) => {
+      const width = 100 / prevCols.length;
+
+      const newCols = prevCols.map((col) => ({
+        ...col,
+        style: {
+          ...col.style,
+          width: `${width}%`,
+        },
+      }));
+
+      return newCols;
+    });
+  };
+
   const handleDeleteColumn = (deleteIndex) => {
     setCols((prevCols) => {
       if (prevCols.length <= 1) return prevCols;
@@ -179,6 +195,13 @@ export default function ColsSetting({
   return (
     <div className="mt-2">
       <div className="d-flex justify-content-end mb-1">
+        <button
+          className="btn btn-link btn-sm text-primary text-decoration-none pb-0"
+          style={{ fontSize: "12px" }}
+          onClick={sameWidth}
+        >
+          Mismo ancho
+        </button>
         <button
           className="btn btn-link btn-sm text-primary text-decoration-none pb-0"
           style={{ fontSize: "12px" }}

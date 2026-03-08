@@ -221,52 +221,84 @@ export function renderContent(item) {
         center: "center",
         right: "flex-end",
       };
+
       const justifyContent = justifyMap[item.content?.align] || "flex-start";
+
+      // 🔥 traducir tu layout a CSS válido
+      const directionMap = {
+        row: "row",
+        horizontal: "row",
+        col: "column",
+        column: "column",
+        vertical: "column",
+      };
+
+      const flexDirection = directionMap[item.content?.layout] || "row";
+
       return (
-        <div  style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: justifyContent, // ← mueve todo a la derecha
-        }}>
-          <div 
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: justifyContent,
+            flexDirection: flexDirection,
+            gap: item.content?.spacing || "0px",
+            ...item.style,
+          }}
+        >
+          {item.content.menu.map((menu, colIndex) => (
+            <div
+              key={`td-${colIndex}`}
               style={{
-                display: "flex",
-                gap: item.content?.spacing || "0px",
-                ...item.style,
+                textAlign: item.content?.align,     // 🔥 forzar alineación real
+                width: "100%",         // 🔥 evita que el texto se auto-centre
+                display: "block",
               }}
-          >
-            {item.content.menu.map((menu, colIndex) => (
-                <div 
-                  key={`td-${colIndex}`} 
-                  style={{paddingLeft: '${item.content.spacing}'}}
-                >
-                  {menu.text}
-                </div>
-              ))
-            }
-          </div>
+            >
+              {menu.text}
+            </div>
+          ))}
         </div>
-      )
+      );
     }
 
     case "module-social": {
       const socials = item.content.social || [];
-        return (
-          <div style={item.style}>
-            {socials.map((social, rowIndex) => (
-                <span 
-                  style={{ padding: `0px ${item.content.iconSpacing}` }} 
-                  key={`tr-${rowIndex}`}
-                >
-                  <img
-                    src={social.src}
-                    alt={social.alt}
-                    width="auto"
-                    height="32px"
-                  />
-                </span>
-              ))
-            }
+
+      const alignMap = {
+        left: "flex-start",
+        center: "center",
+        right: "flex-end"
+      };
+
+      const justifyContent = alignMap[item.style?.textAlign] || "flex-start";
+
+      return (
+        <div
+          className="d-flex"
+          style={{
+            ...item.style,
+            justifyContent
+          }}
+        >
+          {socials.map((social, rowIndex) => (
+            <div
+              key={`tr-${rowIndex}`}
+              style={{
+                paddingRight: item.content.iconSpacing,
+                paddingLeft: item.content.iconSpacing
+              }}
+            >
+              <span>
+                <img
+                  src={social.src}
+                  alt={social.alt}
+                  width={item.content.size}
+                  height={item.content.size}
+                />
+              </span>
+            </div>
+          ))}
         </div>
       );
     }
