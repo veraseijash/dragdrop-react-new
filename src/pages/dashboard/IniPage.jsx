@@ -504,7 +504,7 @@ export default function IniPage() {
         }
       }
     };
-
+console.log('pageData: ', pageData)
     fetchPageData();
   }, [id]);
 

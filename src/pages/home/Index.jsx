@@ -5,11 +5,15 @@ import { Link } from "react-router-dom";
 import { getTemplatesUser, deleteTemplate } from "../../services/Services";
 import { toast } from "react-toastify";
 import { confirmToast } from "../../components/dashboard/utilities/confirmToast"
+import ModalMailing from "../../components/dashboard/utilities/ModalMailing";
+import { buildEmailHtml } from "../../data/EmailBuilder";
 
 export default function Index() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [templates, setTemplates] = useState([]);
   const userId = 1;
+  const [pageData, setPageData] = useState(null);
+  const [openMailing, setOpenMailing] = useState(false);
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -72,6 +76,16 @@ export default function Index() {
     });
   };
 
+  const handleSendTest = (template) => {
+    try {
+      setPageData(template.template_list);
+      setOpenMailing(true);
+    } catch (error) {
+      console.error("Error cargando template:", error);
+      toast.error("No se pudo cargar la plantilla");
+    }
+  };
+
   return (
   <div className="editor-root">
     <div className="editor-conteniner">
@@ -99,7 +113,9 @@ export default function Index() {
       <div className="editor-base-conteniner">
         <div className="files-content">
           <div className="mb-4">
-            <h4>Inicio rápido con plantillas básicas</h4>
+            <div className="section-title">
+              <h4>Inicio rápido con plantillas básicas</h4>
+            </div>
             <div className="files-main-content">
               <div className="basic-templates-grid d-flex flex-column">
                   <div className="template-preview">
@@ -112,7 +128,9 @@ export default function Index() {
             </div>
           </div>
           <div className="mb-4">
-            <h4>Plantillas registradas</h4>
+            <div className="section-title">
+              <h4>Plantillas registradas</h4>
+            </div>
             <div className="files-main-content">
               {templates.length === 0 && <p>No hay plantillas</p>}
               {templates.map((template) => (
@@ -123,11 +141,19 @@ export default function Index() {
                   <div className="actions-menu">
                     <div className="btn-group">
                       <button type="button" className="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-three-dots-vertical"></i>
+                        <i className="bi bi-three-dots-vertical"></i>
                       </button>
                       <ul className="dropdown-menu dropdown-menu-end">
-                        <li><button className="dropdown-item" type="button"><i class="bi bi-send"></i> Enviar prueba</button></li>
-                        <li><button className="dropdown-item" type="button"><i class="bi bi-upload"></i> Exportar</button></li>
+                        <li>
+                          <button 
+                            className="dropdown-item" 
+                            type="button"
+                            onClick={() => handleSendTest(template)}
+                          >
+                              <i className="bi bi-send"></i> Enviar prueba
+                          </button>
+                        </li>
+                        <li><button className="dropdown-item" type="button"><i className="bi bi-upload"></i> Exportar</button></li>
                         <li><hr className="dropdown-divider"/></li>
                         <li>
                           <button
@@ -165,6 +191,11 @@ export default function Index() {
       </div>
       <div className="editor-footer"></div>
     </div>
+    <ModalMailing
+      open={openMailing}
+      onClose={() => setOpenMailing(false)}
+      templateHtml={pageData ? buildEmailHtml(pageData) : ""}
+    />
   </div>
   )
 }

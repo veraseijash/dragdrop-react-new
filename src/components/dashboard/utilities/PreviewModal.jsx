@@ -23,7 +23,6 @@ export default function ImageModal({ open = false, onClose, pageData }) {
       setSize({ width: 320, height: 480 });
     }
   }, [viewMode]);
-
   /* Resize solo PC */
   useEffect(() => {
     const handleResize = () => {

@@ -22,6 +22,9 @@ export default function ModalMailing({ open, onClose, templateHtml }) {
     // validar que exista html
     if (!templateHtml) {
       console.error("No existe contenido HTML para enviar");
+      toast.error("No existe contenido HTML para enviar");
+      setIsLoading(false);
+      onClose();
       return;
     }
 
