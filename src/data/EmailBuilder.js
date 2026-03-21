@@ -103,7 +103,8 @@ const renderModuleContent = (module) => {
         </table>
       `;
 
-    case "module-heading": {
+    case "module-heading":
+    case "module-paragraph": {
       const Tag = module.content.type || "h2";
 
       const { textAlign, FontFamily, ...restStyle } = module.style || {};

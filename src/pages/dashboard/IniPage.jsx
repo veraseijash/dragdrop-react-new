@@ -504,7 +504,6 @@ export default function IniPage() {
         }
       }
     };
-console.log('pageData: ', pageData)
     fetchPageData();
   }, [id]);
 
@@ -560,6 +559,31 @@ console.log('pageData: ', pageData)
       // 🔹 Desactivar loader
       setIsLoading(false);
     }
+  };
+  // ==============================
+  // ✏️ VIENE DE LA IA
+  // ==============================
+  const handleTemplateIA = (rowsIA) => {
+    setPageData(prev => {
+      let currentRows = prev.rows || [];
+
+      const isSingleEmptyRow =
+        currentRows.length === 1 &&
+        currentRows[0].cols?.length === 1 &&
+        currentRows[0].cols[0].content?.length === 0;
+
+      if (isSingleEmptyRow) {
+        currentRows = []; // 🔥 eliminar row vacío
+      }
+
+      return {
+        ...prev,
+        rows: [
+          ...currentRows,
+          ...rowsIA
+        ]
+      };
+    });
   };
 
   return (
@@ -722,7 +746,10 @@ console.log('pageData: ', pageData)
               </ul>
               <div>
                 {activeTab === "content" && (
-                  <Content setDragData={setDragData} />
+                  <Content 
+                    setDragData={setDragData} 
+                    handleTemplateIA={handleTemplateIA}
+                  />
                 )}
 
                 {activeTab === "rows" && (
@@ -761,7 +788,7 @@ console.log('pageData: ', pageData)
       <ModalMailing
         open={openMailing}
         onClose={() => setOpenMailing(false)}
-        templateHtml={buildEmailHtml(pageData)}
+        templateIA={handleTemplateIA}
       />
     </div>
     

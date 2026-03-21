@@ -19,10 +19,15 @@ export const deleteImage = async (publicId) => {
   return data;
 }
 
-export const uploadImageCloudinary = async (file) => {
+export const uploadImageCloudinary = async (file, tags = "") => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("upload_preset", UPLOAD_PRESET);
+
+  // 🔥 agregar tags
+  if (tags) {
+    formData.append("tags", tags); // "shopping,mall,people"
+  }
 
   const { data } = await axios.post(CLOUDINARY_URL, formData, {
     headers: {
@@ -36,7 +41,18 @@ export const uploadImageCloudinary = async (file) => {
     format: data.format,
     height: data.height,
     width: data.width,
+    tags: data.tags || [], // 👈 opcional (por si quieres usarlos)
   };
+};
+
+export const searchImages = async (query) => {
+  try {
+    const { data } = await api.get(`cloudinary/search?q=${encodeURIComponent(query)}`);
+    return data;
+  } catch (error) {
+    console.error('Error buscando imágenes:', error);
+    return { total: 0, data: [] };
+  }
 };
 
 export const getGiphy = async (search) => {
@@ -97,3 +113,10 @@ export const sendMail = async (body) => {
   const { data } = await api.post(`mail/send/`, body);
   return data;
 }
+
+export const generateEmailIA = async (prompt) => {
+  const { data } = await api.post(`ai/generate-email`, {
+    prompt
+  });
+  return data;
+};

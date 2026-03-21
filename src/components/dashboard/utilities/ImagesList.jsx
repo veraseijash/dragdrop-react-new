@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { getImageList, deleteImage } from "../../../services/Services";
 import { toast } from "react-toastify";
 
-export default function ImagesList({ onSelect, refreshKey }) {
+export default function ImagesList({ onSelect, refreshKey, images }) {
   const [listImg, setListImg] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
 
+  // 🔥 CARGA NORMAL (cuando NO hay búsqueda)
   useEffect(() => {
+    // si hay imágenes de búsqueda → NO cargar desde API
+    if (images) return;
+
     setLoading(true);
 
     getImageList()
@@ -20,17 +24,23 @@ export default function ImagesList({ onSelect, refreshKey }) {
       .finally(() => {
         setLoading(false);
       });
-  }, [refreshKey]);
+  }, [refreshKey, images]);
+
+  // 🔥 CUANDO VIENEN RESULTADOS DE BÚSQUEDA
+  useEffect(() => {
+    if (images) {
+      setListImg(images);
+    }
+  }, [images]);
 
   async function handleDelete(img) {
     try {
-      setDeletingId(img.public_id); // 🔒 bloquear SOLO este item
+      setDeletingId(img.public_id);
 
       await deleteImage(img.public_id);
 
       toast.success("Imagen eliminada");
 
-      // quitarla del estado sin recargar todo (más rápido)
       setListImg((prev) =>
         prev.filter((i) => i.public_id !== img.public_id)
       );
@@ -38,10 +48,9 @@ export default function ImagesList({ onSelect, refreshKey }) {
       toast.error("Error al eliminar imagen");
       console.error(error);
     } finally {
-      setDeletingId(null); // 🔓 liberar
+      setDeletingId(null);
     }
   }
-
 
   if (loading) {
     return <div className="p-3">Cargando imágenes...</div>;
@@ -57,7 +66,7 @@ export default function ImagesList({ onSelect, refreshKey }) {
         const isDeleting = deletingId === img.public_id;
 
         return (
-          <div key={img.asset_id} className="np-gallery-item">
+          <div key={img.public_id || img.asset_id} className="np-gallery-item">
             
             {/* Overlay de eliminación */}
             {isDeleting && (
@@ -78,8 +87,8 @@ export default function ImagesList({ onSelect, refreshKey }) {
 
             {/* Imagen */}
             <img
-              src={img.secure_url}
-              alt={img.display_name}
+              src={img.secure_url || img.url} // 🔥 soporta search y normal
+              alt={img.display_name || "image"}
               loading="lazy"
             />
 

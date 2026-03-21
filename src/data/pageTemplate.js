@@ -87,11 +87,6 @@ export const rowCols = [
   {
     id: crypto.randomUUID(),
     rowPosition: 0, 
-    preStyle: {
-      width: '100%',        
-      maxWidth: '650px',
-      backgroundColor: 'transparent',
-    },           
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -107,6 +102,11 @@ export const rowCols = [
         width: '100%',
       },
     },
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },           
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -138,26 +138,26 @@ export const rowCols = [
   {
     id: crypto.randomUUID(),
     rowPosition: 0, 
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
     preStyle: {
       width: '100%',        
       maxWidth: '650px',
       backgroundColor: 'transparent',
     },         
-    template_list: {
-      style: {
-        backgroundColor: 'transparent',
-        backgroundImage: 'none',
-        backgroundPosition: 'left top',
-        backgroundRepeat: 'no-repeat',
-        borderWidth: '0px',
-        borderStyle: 'solid',
-        borderColor: 'transparent',
-        borderRadius: '0px',
-        color: '#000000',
-        padding: '0px',
-        width: '100%',
-      },
-    },
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -202,12 +202,7 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,  
-    preStyle: {
-      width: '100%',        
-      maxWidth: '650px',
-      backgroundColor: 'transparent',
-    },               
+    rowPosition: 0, 
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -222,7 +217,12 @@ export const rowCols = [
         padding: '0px',
         width: '100%',
       },
-    },
+    }, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -267,27 +267,27 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0, 
+    rowPosition: 0,
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    }, 
     preStyle: {
       width: '100%',        
       maxWidth: '650px',
       backgroundColor: 'transparent',
     },             
-    template_list: {
-      style: {
-        backgroundColor: 'transparent',
-        backgroundImage: 'none',
-        backgroundPosition: 'left top',
-        backgroundRepeat: 'no-repeat',
-        borderWidth: '0px',
-        borderStyle: 'solid',
-        borderColor: 'transparent',
-        borderRadius: '0px',
-        color: '#000000',
-        padding: '0px',
-        width: '100%',
-      },
-    },
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -332,27 +332,27 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,   
+    rowPosition: 0, 
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },  
     preStyle: {
       width: '100%',        
       maxWidth: '650px',
       backgroundColor: 'transparent',
     },              
-    template_list: {
-      style: {
-        backgroundColor: 'transparent',
-        backgroundImage: 'none',
-        backgroundPosition: 'left top',
-        backgroundRepeat: 'no-repeat',
-        borderWidth: '0px',
-        borderStyle: 'solid',
-        borderColor: 'transparent',
-        borderRadius: '0px',
-        color: '#000000',
-        padding: '0px',
-        width: '100%',
-      },
-    },
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -397,12 +397,7 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,  
-    preStyle: {
-      width: '100%',        
-      maxWidth: '650px',
-      backgroundColor: 'transparent',
-    },               
+    rowPosition: 0, 
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -417,7 +412,12 @@ export const rowCols = [
         padding: '0px',
         width: '100%',
       },
-    },
+    }, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -462,12 +462,7 @@ export const rowCols = [
   }, 
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,  
-    preStyle: {
-      width: '100%',        
-      maxWidth: '650px',
-      backgroundColor: 'transparent',
-    },               
+    rowPosition: 0, 
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -482,7 +477,12 @@ export const rowCols = [
         padding: '0px',
         width: '100%',
       },
-    },
+    }, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -542,26 +542,26 @@ export const rowCols = [
   {
     id: crypto.randomUUID(),
     rowPosition: 0, 
+    template_list: {
+      style: {
+        backgroundColor: 'transparent',
+        backgroundImage: 'none',
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'no-repeat',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderColor: 'transparent',
+        borderRadius: '0px',
+        color: '#000000',
+        padding: '0px',
+        width: '100%',
+      },
+    },
     preStyle: {
       width: '100%',        
       maxWidth: '650px',
       backgroundColor: 'transparent',
     },                
-    template_list: {
-      style: {
-        backgroundColor: 'transparent',
-        backgroundImage: 'none',
-        backgroundPosition: 'left top',
-        backgroundRepeat: 'no-repeat',
-        borderWidth: '0px',
-        borderStyle: 'solid',
-        borderColor: 'transparent',
-        borderRadius: '0px',
-        color: '#000000',
-        padding: '0px',
-        width: '100%',
-      },
-    },
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -620,12 +620,7 @@ export const rowCols = [
   },
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,  
-    preStyle: {
-      width: '100%',        
-      maxWidth: '650px',
-      backgroundColor: 'transparent',
-    },               
+    rowPosition: 0, 
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -640,7 +635,12 @@ export const rowCols = [
         padding: '0px',
         width: '100%',
       },
-    },
+    }, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -699,12 +699,7 @@ export const rowCols = [
   },
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,  
-    preStyle: {
-      width: '100%',        
-      maxWidth: '650px',
-      backgroundColor: 'transparent',
-    },               
+    rowPosition: 0, 
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -719,7 +714,12 @@ export const rowCols = [
         padding: '0px',
         width: '100%',
       },
-    },
+    }, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -778,12 +778,7 @@ export const rowCols = [
   },
   {
     id: crypto.randomUUID(),
-    rowPosition: 0,  
-    preStyle: {
-      width: '100%',        
-      maxWidth: '650px',
-      backgroundColor: 'transparent',
-    },               
+    rowPosition: 0, 
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -798,7 +793,12 @@ export const rowCols = [
         padding: '0px',
         width: '100%',
       },
-    },
+    }, 
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },               
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -872,11 +872,6 @@ export const rowCols = [
   {
     id: crypto.randomUUID(),
     rowPosition: 0, 
-    preStyle: {
-      width: '100%',        
-      maxWidth: '650px',
-      backgroundColor: 'transparent',
-    },                
     template_list: {
       style: {
         backgroundColor: 'transparent',
@@ -892,6 +887,11 @@ export const rowCols = [
         width: '100%',
       },
     },
+    preStyle: {
+      width: '100%',        
+      maxWidth: '650px',
+      backgroundColor: 'transparent',
+    },                
     style: {
       backgroundColor: 'transparent',
       backgroundImage: 'none',
@@ -989,6 +989,5 @@ export const rowCols = [
         content: [],
       },
     ],
-  },
-  
+  },  
 ]

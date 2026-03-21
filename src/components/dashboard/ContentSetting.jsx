@@ -35,6 +35,7 @@ export default function ContentSetting({
          onUpdate={onChangeContent}
         />;
       case "module-heading":
+      case "module-paragraph":
         return <SettingHeading
           content={content}
           onUpdate={onChangeContent}

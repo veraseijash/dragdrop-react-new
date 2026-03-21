@@ -129,7 +129,7 @@ export const TYPE_CONTENT = {
   },
 
   "module-paragraph": {
-    type: "module-heading",
+    type: "module-paragraph",
     label: "Párrafo",
     icon: "paragraph",
     outerStyle: {},
@@ -520,9 +520,6 @@ export const TYPE_CONTENT = {
       html: '<div style="text-align: center;">Aquí tu bloque HTML</div>'
     }
   }
-
-  
-  // 👉 agrega más modules aquí
   
 };
 

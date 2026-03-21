@@ -5,6 +5,7 @@ export default function UploadImageDropdown({ onSubmit }) {
   const fileRef = useRef(null);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [tags, setTags] = useState("");
 
   function handleSelectFile(e) {
     const selected = e.target.files[0];
@@ -22,6 +23,7 @@ export default function UploadImageDropdown({ onSubmit }) {
   function reset() {
     setFile(null);
     setPreview(null);
+    setTags("");
 
     if (fileRef.current) {
       fileRef.current.value = "";
@@ -33,6 +35,7 @@ export default function UploadImageDropdown({ onSubmit }) {
     // 1️⃣ limpiar estado
     setFile(null);
     setPreview(null);
+    setTags("");
 
     // 2️⃣ limpiar input file
     if (fileRef.current) {
@@ -73,7 +76,20 @@ export default function UploadImageDropdown({ onSubmit }) {
         hidden
         onChange={handleSelectFile}
       />
+      <div className="mt-3">
+        <label htmlFor="setTags" className="form-label">
+          Coloque las etiquetas que identifiquen la imagen.
+        </label>
 
+        <input
+          id="setTags"
+          className="form-control"
+          type="text"
+          placeholder='Separa con coma "," si hay más de una etiqueta.'
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+        />
+      </div>
       <div className="d-flex justify-content-end gap-2 mt-3">
         <button
           className="btn btn-secondary btn-sm"
@@ -93,7 +109,7 @@ export default function UploadImageDropdown({ onSubmit }) {
           disabled={!file}
           onClick={() => {
             closeDropdown();
-            onSubmit?.(file);
+            onSubmit?.(file, tags);
           }}
         >
           Registrar
