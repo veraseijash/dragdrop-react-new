@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import logoSmall from "../../assets/images/logo-black.svg";
 import newTemplate from "../../assets/images/new-template.png";
 import { Link } from "react-router-dom";
-import { getTemplatesUser, deleteTemplate } from "../../services/Services";
+import { getTemplatesUser, deleteTemplate, exportTemplateZip } from "../../services/Services";
 import { toast } from "react-toastify";
 import { confirmToast } from "../../components/dashboard/utilities/confirmToast"
 import ModalMailing from "../../components/dashboard/utilities/ModalMailing";
@@ -22,6 +22,10 @@ export default function Index() {
       document.exitFullscreen(); // salir
     }
   };
+
+  const handleExport = async (id) => {
+    await exportTemplateZip(id);
+  }
 
   useEffect(() => {
     const handleChange = () => {
@@ -153,7 +157,15 @@ export default function Index() {
                               <i className="bi bi-send"></i> Enviar prueba
                           </button>
                         </li>
-                        <li><button className="dropdown-item" type="button"><i className="bi bi-upload"></i> Exportar</button></li>
+                        <li>
+                          <button 
+                            className="dropdown-item" 
+                            type="button"
+                            onClick={() => handleExport(template.id)}
+                          >
+                            <i className="bi bi-upload"></i> Exportar
+                          </button>
+                        </li>
                         <li><hr className="dropdown-divider"/></li>
                         <li>
                           <button

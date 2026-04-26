@@ -10,7 +10,7 @@ import RowSetting from "../../components/dashboard/RowSetting";
 import { getTypeContent } from "../../data/TypeContent";
 import logoSmall from "../../assets/images/logo-black.svg";
 import ContentSetting from "../../components/dashboard/ContentSetting";
-import { createTemplate, updateTemplate, getTemplate, generateImage } from "../../services/Services";
+import { createTemplate, updateTemplate, getTemplate, generateImage, exportTemplateZip } from "../../services/Services";
 import { buildEmailHtml } from "../../data/EmailBuilder";
 import Tippy from '@tippyjs/react';
 import PreviewModal from "../../components/dashboard/utilities/PreviewModal";
@@ -29,6 +29,10 @@ export default function IniPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [openMailing, setOpenMailing] = useState(false);
+
+  const handleExport = async (id) => {
+    await exportTemplateZip(id);
+  }
 
   useEffect(() => {
   if (pageData?.name) {
@@ -631,7 +635,8 @@ export default function IniPage() {
               </button>
             </Tippy>
             <div className="btn-group">
-              <button type="button" className="btn btn-outline-primary" data-bs-toggle="dropdown" aria-expanded="false" style={{borderTopRightRadius: '0.375rem', borderBottomRightRadius: '0.375rem'}}>Exportar</button>
+              <button 
+                type="button" className="btn btn-outline-primary" data-bs-toggle="dropdown" aria-expanded="false" style={{borderTopRightRadius: '0.375rem', borderBottomRightRadius: '0.375rem'}}>Exportar</button>
               <ul className="dropdown-menu dropdown-menu-end export-style">
                 <li>
                   <a
@@ -648,7 +653,7 @@ export default function IniPage() {
                   </a>
                 </li>
                 <li>
-                    <a className="d-flex gap-2">
+                    <a className="d-flex gap-2" onClick={() => handleExport(pageData.id)}>
                         <div className="avatar">
                           <span className="ico ico-file-zip" />
                         </div>

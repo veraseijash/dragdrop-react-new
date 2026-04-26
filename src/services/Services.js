@@ -55,6 +55,28 @@ export const searchImages = async (query) => {
   }
 };
 
+export const exportTemplateZip = async (id) => {
+  try {
+    const response = await api.get(`templates/export/${id}`, {
+      responseType: "blob", // 🔥 importante
+    });
+
+    // crear descarga automática
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.setAttribute("download", `template-${id}.zip`);
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+  } catch (error) {
+    console.error("Error exportando template:", error);
+  }
+};
+
 export const getGiphy = async (search) => {
   try {
     const url = `https://api.giphy.com/v1/gifs/search?q=${encodeURIComponent(
